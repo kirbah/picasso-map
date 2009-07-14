@@ -6,6 +6,7 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 /**
@@ -53,5 +54,13 @@ public class MarkerStorage implements IsSerializable {
 	public Long getId() {
 		return id;
 	}
+	
+	public LatLng getLatLng() {
+		return LatLng.newInstance(getLatitude(), getLongitude());
+	}
 
+	public void setLatLng(LatLng latLng) {
+		latitude = latLng.getLatitude();
+		longitude = latLng.getLongitude();
+	}
 }
