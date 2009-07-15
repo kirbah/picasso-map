@@ -10,13 +10,11 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
  */
 @RemoteServiceRelativePath("maps")
 public interface MapsDataService extends RemoteService {
-	/**
-	 * Gets all tasks that have been persisted.
-	 * 
-	 * @return
-	 */
 	MarkerStorage[] getMarkerStorageList();
 
 	Long persistMarkerStorage(MarkerStorage markerStorage);
 
+	MarkerStorage getMarkerStorage(Long id);
+
+	Boolean deleteMarkerStorage(Long id);
 }

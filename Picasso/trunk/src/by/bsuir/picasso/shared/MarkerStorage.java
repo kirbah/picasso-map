@@ -51,10 +51,14 @@ public class MarkerStorage implements IsSerializable {
 		this.longitude = longitude;
 	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public Long getId() {
 		return id;
 	}
-	
+
 	public LatLng getLatLng() {
 		return LatLng.newInstance(getLatitude(), getLongitude());
 	}
