@@ -72,7 +72,7 @@ public class Picasso implements EntryPoint {
 		vPanel.add(addMarkerButton);
 
 		map = new MapWidget(LatLng.newInstance(37.4419, -122.1419), 13);
-		// map.setSize("500px", "300px");
+		//map.setSize("500px", "300px");
 		map.setSize("250px", "150px");
 		//map.setUIToDefault();
 		vPanel.add(map);
