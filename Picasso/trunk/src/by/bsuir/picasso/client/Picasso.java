@@ -1,5 +1,6 @@
 package by.bsuir.picasso.client;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 import by.bsuir.picasso.shared.MarkerStorage;
@@ -12,6 +13,7 @@ import com.google.gwt.maps.client.MapType;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.Maps;
 import com.google.gwt.maps.client.event.MapClickHandler;
+import com.google.gwt.maps.client.event.MarkerClickHandler;
 import com.google.gwt.maps.client.event.MarkerDragEndHandler;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.overlay.Marker;
@@ -44,7 +46,6 @@ public class Picasso implements EntryPoint {
 	 */
 	private final MapsDataServiceAsync mapsDataService = GWT.create(MapsDataService.class);
 
-	private MarkerStorage[] markerStorage = null;
 	private HashMap<Marker, MarkerStorage> markersHash = new HashMap<Marker, MarkerStorage>();
 	private MarkerStorage addedMarker = null;
 	MapWidget map = null;
@@ -94,8 +95,28 @@ public class Picasso implements EntryPoint {
 			saveMarkerStorage(markerStore);
 		}
 	}
+	class MyMarkerClickHandler implements MarkerClickHandler {
+		public void onClick(MarkerClickEvent event) {
+			final Marker marker = event.getSender();
+			MarkerStorage markerStorage = markersHash.get(marker);
 
-	private void showMarkers() {
+			mapsDataService.deleteMarkerStorage(markerStorage.getId(), new AsyncCallback<Boolean>() {
+				public void onFailure(Throwable caught) {
+					Window.alert(SERVER_ERROR);
+				}
+
+				public void onSuccess(Boolean result) {
+					if (result) {
+						markersHash.remove(marker);
+						map.removeOverlay(marker);
+						showMarkersTable();
+					}
+				}
+			});
+		}
+	}
+
+	private void showMarkers(MarkerStorage[] markerStorage) {
 		for (int j = 0; j < markerStorage.length; j++) {
 			MarkerStorage markerStore = markerStorage[j];
 
@@ -112,6 +133,7 @@ public class Picasso implements EntryPoint {
 		options.setTitle(markerStore.getName());
 		final Marker marker = new Marker(markerStore.getLatLng(), options);
 		marker.addMarkerDragEndHandler(new MyMarkerDragEndHandler());
+		marker.addMarkerClickHandler(new MyMarkerClickHandler());
 		return marker;
 	}
 
@@ -124,8 +146,8 @@ public class Picasso implements EntryPoint {
 		flexTable.setWidget(0, 2, new HTML("<b>Latitude</b>"));
 		flexTable.setWidget(0, 3, new HTML("<b>Longitude</b>"));
 
-		for (int j = 0; j < markerStorage.length; j++) {
-			MarkerStorage marker = markerStorage[j];
+		Collection<MarkerStorage> markerStorage = markersHash.values();
+		for (MarkerStorage marker : markerStorage) {
 			int numRows = flexTable.getRowCount();
 			flexTable.setWidget(numRows, 0, new HTML(marker.getId().toString()));
 			flexTable.setWidget(numRows, 1, new HTML(marker.getName()));
@@ -144,8 +166,8 @@ public class Picasso implements EntryPoint {
 			}
 
 			public void onSuccess(MarkerStorage[] result) {
-				markerStorage = result;
-				showMarkers();
+				showMarkers(result);
+				showMarkersTable();
 			}
 		});
 	}
@@ -198,9 +220,10 @@ public class Picasso implements EntryPoint {
 
 						final Marker marker = createMarker(addedMarker);
 						sender.addOverlay(marker);
-						
+
 						markersHash.put(marker, addedMarker);
 						saveMarkerStorage(addedMarker);
+						showMarkersTable();
 					}
 				});
 			}
