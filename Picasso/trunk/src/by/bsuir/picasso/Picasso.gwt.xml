@@ -29,6 +29,12 @@
     you must obtain a Google Maps API key at:
     http://www.google.com/apis/maps/signup.html
     Replace the src attribute below with a URL that contains your key.
-  -->
+http://localhost/
   <script src="http://maps.google.com/maps?gwt=1&amp;file=api&amp;v=2&amp;key=ABQIAAAARrCK38aboqQKDotehUjrPhTb-vLQlFZmc2N8bgWI8YDPp5FEVBQ-MFjXfKfAvdbsbp3pa0q7fQNDDA" />
+
+http://picasso-map.appspot.com/
+  <script src="http://maps.google.com/maps?gwt=1&amp;file=api&amp;v=2&amp;key=ABQIAAAAb2yx7NRiag8Ko-bH6ewDPhTUj3LLQjpve3K0r5QTdcaDizwGKBTyqOKPtjItVFL79DGvp67YY_zPpg" />
+  -->
+
+  <script src="http://maps.google.com/maps?gwt=1&amp;file=api&amp;v=2&amp;key=ABQIAAAAb2yx7NRiag8Ko-bH6ewDPhTUj3LLQjpve3K0r5QTdcaDizwGKBTyqOKPtjItVFL79DGvp67YY_zPpg" />
 </module>
