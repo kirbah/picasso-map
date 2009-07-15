@@ -8,16 +8,14 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.maps.client.MapType;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.Maps;
 import com.google.gwt.maps.client.event.MapClickHandler;
 import com.google.gwt.maps.client.event.MarkerDragEndHandler;
-import com.google.gwt.maps.client.event.MarkerDragStartHandler;
-import com.google.gwt.maps.client.event.MapClickHandler.MapClickEvent;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.overlay.Marker;
 import com.google.gwt.maps.client.overlay.MarkerOptions;
-import com.google.gwt.maps.client.overlay.Overlay;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
@@ -39,8 +37,7 @@ public class Picasso implements EntryPoint {
 	 * returns an error.
 	 */
 	private static final String SERVER_ERROR = "An error occurred while "
-			+ "attempting to contact the server. Please check your network "
-			+ "connection and try again.";
+			+ "attempting to contact the server. Please check your network connection and try again.";
 
 	/**
 	 * Create a remote service proxy to talk to the server-side Maps service.
@@ -56,16 +53,16 @@ public class Picasso implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-	    if (!Maps.isLoaded()) {
-	      Window.alert("The Maps API is not installed."
-	          + "  The <script> tag that loads the Maps API may be missing or your Maps key may be wrong.");
-	      return;
-	    }
+		if (!Maps.isLoaded()) {
+			Window.alert("The Maps API is not installed."
+					+ "  The <script> tag that loads the Maps API may be missing or your Maps key may be wrong.");
+			return;
+		}
 
-	    if (!Maps.isBrowserCompatible()) {
-	      Window.alert("The Maps API is not compatible with this browser.");
-	      return;
-	    }
+		if (!Maps.isBrowserCompatible()) {
+			Window.alert("The Maps API is not compatible with this browser.");
+			return;
+		}
 
 		VerticalPanel vPanel = new VerticalPanel();
 		vPanel.setSpacing(10);
@@ -73,22 +70,13 @@ public class Picasso implements EntryPoint {
 		final Button addMarkerButton = addMarkerButton();
 		vPanel.add(addMarkerButton);
 
-		final Button saveMarkerButton = new Button("save");
-
-		class saveMarkerHandler implements ClickHandler {
-			public void onClick(ClickEvent event) {
-				if (addedMarker != null) {
-					saveMarkerStorage(addedMarker);
-				}
-			}
-		}
-		saveMarkerButton.addClickHandler(new saveMarkerHandler());
-		vPanel.add(saveMarkerButton);
-
 		map = new MapWidget(LatLng.newInstance(37.4419, -122.1419), 13);
-		//map.setSize("500px", "300px");
+		// map.setSize("500px", "300px");
 		map.setSize("250px", "150px");
+		//map.setUIToDefault();
 		vPanel.add(map);
+	    map.addMapType(MapType.getHybridMap());
+	    map.setCurrentMapType(MapType.getHybridMap());
 
 		DecoratorPanel decorator = new DecoratorPanel();
 		decorator.add(vPanel);
@@ -102,32 +90,29 @@ public class Picasso implements EntryPoint {
 		public void onDragEnd(MarkerDragEndEvent event) {
 			Marker marker = event.getSender();
 			MarkerStorage markerStore = markersHash.get(marker);
-			markerStore.setLatitude(marker.getLatLng().getLatitude());
-			markerStore.setLongitude(marker.getLatLng().getLongitude());
+			markerStore.setLatLng(marker.getLatLng());
 			saveMarkerStorage(markerStore);
 		}
 	}
 
-	class MyMarkerDragStartHandler implements MarkerDragStartHandler {
-		@Override
-		public void onDragStart(MarkerDragStartEvent event) {
-			// TODO Auto-generated method stub
-			
-		}
-	}
-	
 	private void showMarkers() {
 		for (int j = 0; j < markerStorage.length; j++) {
 			MarkerStorage markerStore = markerStorage[j];
 
-		    MarkerOptions options = MarkerOptions.newInstance();
-		    options.setDraggable(true);
-		    final Marker marker = new Marker(markerStore.getLatLng(), options);
-		    marker.addMarkerDragEndHandler(new MyMarkerDragEndHandler());
+			final Marker marker = createMarker(markerStore);
 
-		    markersHash.put(marker, markerStore);
-		    map.addOverlay(marker);
+			markersHash.put(marker, markerStore);
+			map.addOverlay(marker);
 		}
+	}
+
+	private Marker createMarker(MarkerStorage markerStore) {
+		MarkerOptions options = MarkerOptions.newInstance();
+		options.setDraggable(true);
+		options.setTitle(markerStore.getName());
+		final Marker marker = new Marker(markerStore.getLatLng(), options);
+		marker.addMarkerDragEndHandler(new MyMarkerDragEndHandler());
+		return marker;
 	}
 
 	private void showMarkersTable() {
@@ -142,13 +127,10 @@ public class Picasso implements EntryPoint {
 		for (int j = 0; j < markerStorage.length; j++) {
 			MarkerStorage marker = markerStorage[j];
 			int numRows = flexTable.getRowCount();
-			flexTable
-					.setWidget(numRows, 0, new HTML(marker.getId().toString()));
+			flexTable.setWidget(numRows, 0, new HTML(marker.getId().toString()));
 			flexTable.setWidget(numRows, 1, new HTML(marker.getName()));
-			flexTable.setWidget(numRows, 2, new HTML(Double.toString(marker
-					.getLatitude())));
-			flexTable.setWidget(numRows, 3, new HTML(Double.toString(marker
-					.getLongitude())));
+			flexTable.setWidget(numRows, 2, new HTML(Double.toString(marker.getLatitude())));
+			flexTable.setWidget(numRows, 3, new HTML(Double.toString(marker.getLongitude())));
 		}
 
 		RootPanel.get("test-markers").clear();
@@ -156,17 +138,16 @@ public class Picasso implements EntryPoint {
 	}
 
 	private void loadMarkers() {
-		mapsDataService
-				.getMarkerStorageList(new AsyncCallback<MarkerStorage[]>() {
-					public void onFailure(Throwable caught) {
-						Window.alert(SERVER_ERROR);
-					}
+		mapsDataService.getMarkerStorageList(new AsyncCallback<MarkerStorage[]>() {
+			public void onFailure(Throwable caught) {
+				Window.alert(SERVER_ERROR);
+			}
 
-					public void onSuccess(MarkerStorage[] result) {
-						markerStorage = result;
-						showMarkers();
-					}
-				});
+			public void onSuccess(MarkerStorage[] result) {
+				markerStorage = result;
+				showMarkers();
+			}
+		});
 	}
 
 	private Button addMarkerButton() {
@@ -208,19 +189,20 @@ public class Picasso implements EntryPoint {
 				nameField.setValue("");
 
 				map.addMapClickHandler(new MapClickHandler() {
-			        public void onClick(MapClickEvent e) {
-			        	map.removeMapClickHandler(this);
-			          MapWidget sender = e.getSender();
-			          //Overlay overlay = e.getOverlay();
-			          LatLng point = e.getLatLng();
+					public void onClick(MapClickEvent e) {
+						map.removeMapClickHandler(this);
+						MapWidget sender = e.getSender();
+						// Overlay overlay = e.getOverlay();
+						LatLng point = e.getLatLng();
+						addedMarker.setLatLng(point);
 
-			          Marker marker = new Marker(point);
-			          sender.addOverlay(marker);
-			          addedMarker.setLatLng(point);
-			          markersHash.put(marker, addedMarker);
-			          saveMarkerStorage(addedMarker);
-			        }
-			      });
+						final Marker marker = createMarker(addedMarker);
+						sender.addOverlay(marker);
+						
+						markersHash.put(marker, addedMarker);
+						saveMarkerStorage(addedMarker);
+					}
+				});
 			}
 		});
 
@@ -247,15 +229,16 @@ public class Picasso implements EntryPoint {
 	}
 
 	private void saveMarkerStorage(MarkerStorage marker) {
-		mapsDataService.persistMarkerStorage(marker,
-				new AsyncCallback<Long>() {
-					public void onFailure(Throwable caught) {
-						Window.alert(SERVER_ERROR);
-					}
+		final MarkerStorage markerTmp = marker;
+		mapsDataService.persistMarkerStorage(marker, new AsyncCallback<Long>() {
+			public void onFailure(Throwable caught) {
+				Window.alert(SERVER_ERROR);
+			}
 
-					public void onSuccess(Long result) {
-						showMarkersTable();
-					}
-				});
+			public void onSuccess(Long result) {
+				markerTmp.setId(result);
+				showMarkersTable();
+			}
+		});
 	}
 }
