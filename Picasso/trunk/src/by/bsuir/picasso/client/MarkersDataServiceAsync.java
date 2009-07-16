@@ -7,7 +7,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 /**
  * The async counterpart of <code>MapsDataService</code>.
  */
-public interface MapsDataServiceAsync {
+public interface MarkersDataServiceAsync {
 	void getMarkerStorageList(AsyncCallback<MarkerStorage[]> callback);
 
 	void persistMarkerStorage(MarkerStorage markerStorage, AsyncCallback<Long> callback);

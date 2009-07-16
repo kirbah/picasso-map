@@ -47,7 +47,7 @@ public class Picasso implements EntryPoint {
 	/**
 	 * Create a remote service proxy to talk to the server-side Maps service.
 	 */
-	private final MapsDataServiceAsync mapsDataService = GWT.create(MapsDataService.class);
+	private final MarkersDataServiceAsync markersDataService = GWT.create(MarkersDataService.class);
 
 	private HashMap<Marker, MarkerStorage> markersHash = new HashMap<Marker, MarkerStorage>();
 	private MarkerStorage addedMarker = null;
@@ -140,7 +140,7 @@ public class Picasso implements EntryPoint {
 			final Marker marker = event.getSender();
 			MarkerStorage markerStorage = markersHash.get(marker);
 
-			mapsDataService.deleteMarkerStorage(markerStorage.getId(), new AsyncCallback<Boolean>() {
+			markersDataService.deleteMarkerStorage(markerStorage.getId(), new AsyncCallback<Boolean>() {
 				public void onFailure(Throwable caught) {
 					Window.alert(SERVER_ERROR);
 				}
@@ -200,7 +200,7 @@ public class Picasso implements EntryPoint {
 	}
 
 	private void loadMarkers() {
-		mapsDataService.getMarkerStorageList(new AsyncCallback<MarkerStorage[]>() {
+		markersDataService.getMarkerStorageList(new AsyncCallback<MarkerStorage[]>() {
 			public void onFailure(Throwable caught) {
 				Window.alert(SERVER_ERROR);
 			}
@@ -293,7 +293,7 @@ public class Picasso implements EntryPoint {
 
 	private void saveMarkerStorage(MarkerStorage marker) {
 		final MarkerStorage markerTmp = marker;
-		mapsDataService.persistMarkerStorage(marker, new AsyncCallback<Long>() {
+		markersDataService.persistMarkerStorage(marker, new AsyncCallback<Long>() {
 			public void onFailure(Throwable caught) {
 				Window.alert(SERVER_ERROR);
 			}

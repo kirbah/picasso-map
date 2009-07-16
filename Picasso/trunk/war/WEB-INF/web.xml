@@ -21,8 +21,8 @@
 
   <!-- Servlets -->
   <servlet>
-    <servlet-name>mapsDataServlet</servlet-name>
-    <servlet-class>by.bsuir.picasso.server.MapsDataServiceImpl</servlet-class>
+    <servlet-name>markersDataServlet</servlet-name>
+    <servlet-class>by.bsuir.picasso.server.MarkersDataServiceImpl</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>loginService</servlet-name>
@@ -30,8 +30,8 @@
   </servlet>
 
   <servlet-mapping>
-    <servlet-name>mapsDataServlet</servlet-name>
-    <url-pattern>/picasso/maps</url-pattern>
+    <servlet-name>markersDataServlet</servlet-name>
+    <url-pattern>/picasso/markers</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>loginService</servlet-name>

@@ -8,8 +8,8 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 /**
  * The client side stub for the RPC service.
  */
-@RemoteServiceRelativePath("maps")
-public interface MapsDataService extends RemoteService {
+@RemoteServiceRelativePath("markers")
+public interface MarkersDataService extends RemoteService {
 	MarkerStorage[] getMarkerStorageList();
 
 	Long persistMarkerStorage(MarkerStorage markerStorage);
