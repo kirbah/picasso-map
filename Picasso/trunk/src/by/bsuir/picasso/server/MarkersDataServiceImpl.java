@@ -6,7 +6,7 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import javax.jdo.Transaction;
 
-import by.bsuir.picasso.client.MapsDataService;
+import by.bsuir.picasso.client.MarkersDataService;
 import by.bsuir.picasso.shared.MarkerStorage;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -15,7 +15,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
  * The server side implementation of the RPC service.
  */
 @SuppressWarnings("serial")
-public class MapsDataServiceImpl extends RemoteServiceServlet implements MapsDataService {
+public class MarkersDataServiceImpl extends RemoteServiceServlet implements MarkersDataService {
 
 	@SuppressWarnings("unchecked")
 	public MarkerStorage[] getMarkerStorageList() {
