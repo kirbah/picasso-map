@@ -3,6 +3,7 @@ package by.bsuir.picasso.client;
 import java.util.Collection;
 import java.util.HashMap;
 
+import by.bsuir.picasso.shared.LoginInfo;
 import by.bsuir.picasso.shared.MarkerStorage;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -20,12 +21,14 @@ import com.google.gwt.maps.client.overlay.Marker;
 import com.google.gwt.maps.client.overlay.MarkerOptions;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -40,7 +43,7 @@ public class Picasso implements EntryPoint {
 	 */
 	private static final String SERVER_ERROR = "An error occurred while "
 			+ "attempting to contact the server. Please check your network connection and try again.";
-
+	private LoginInfo loginInfo = null;
 	/**
 	 * Create a remote service proxy to talk to the server-side Maps service.
 	 */
@@ -54,7 +57,44 @@ public class Picasso implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-		if (!Maps.isLoaded()) {
+    // Check login status using login service.
+    LoginServiceAsync loginService = GWT.create(LoginService.class);
+    loginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {
+      public void onFailure(Throwable error) {
+      }
+
+      public void onSuccess(LoginInfo result) {
+        loginInfo = result;
+        if(loginInfo.isLoggedIn()) {
+          loadMapsList();
+        } else {
+          loadLogin();
+        }
+      }
+    });
+  }
+
+  private void loadLogin() {
+    // Assemble login panel.
+    VerticalPanel loginPanel = new VerticalPanel();
+    Label loginLabel = new Label("Please sign in to your Google Account to access the application.");
+    Anchor signInLink = new Anchor("Sign In");
+    signInLink.setHref(loginInfo.getLoginUrl());
+    loginPanel.add(loginLabel);
+    loginPanel.add(signInLink);
+    RootPanel.get("top-line").add(loginPanel);
+  }
+
+  private void loadMapsList() {
+    Anchor signOutLink = new Anchor("Sign Out");
+    signOutLink.setHref(loginInfo.getLogoutUrl());
+    VerticalPanel loginPanel = new VerticalPanel();
+    loginPanel.add(signOutLink);
+    RootPanel.get("top-line").add(loginPanel);
+  }
+
+  private void loadMapsListOLD() {
+    if (!Maps.isLoaded()) {
 			Window.alert("The Maps API is not installed."
 					+ "  The <script> tag that loads the Maps API may be missing or your Maps key may be wrong.");
 			return;
