@@ -8,7 +8,6 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-import com.google.appengine.api.users.User;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -19,7 +18,7 @@ public class MapInfo implements IsSerializable {
   private Long mapId;
 
   @Persistent
-  private User user;
+  private String userEmailAddress;
 
   @Persistent
   private String name;
@@ -53,14 +52,6 @@ public class MapInfo implements IsSerializable {
   public void setCenter(LatLng latLng) {
     latitude = latLng.getLatitude();
     longitude = latLng.getLongitude();
-  }
-
-  public User getUser() {
-    return user;
-  }
-
-  public void setUser(User user) {
-    this.user = user;
   }
 
   public String getName() {
@@ -125,5 +116,13 @@ public class MapInfo implements IsSerializable {
 
   public void setMapId(Long mapId) {
     this.mapId = mapId;
+  }
+
+  public String getUserEmailAddress() {
+    return userEmailAddress;
+  }
+
+  public void setUserEmailAddress(String userEmailAddress) {
+    this.userEmailAddress = userEmailAddress;
   }
 }
