@@ -18,6 +18,9 @@ public class MarkerStorage implements IsSerializable {
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	private Long id;
 
+  @Persistent
+  private Long mapId;
+	
 	@Persistent
 	private String name;
 
@@ -67,4 +70,12 @@ public class MarkerStorage implements IsSerializable {
 		latitude = latLng.getLatitude();
 		longitude = latLng.getLongitude();
 	}
+
+  public Long getMapId() {
+    return mapId;
+  }
+
+  public void setMapId(Long mapId) {
+    this.mapId = mapId;
+  }
 }
