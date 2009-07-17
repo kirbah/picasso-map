@@ -1,4 +1,4 @@
-package by.bsuir.picasso.server;
+package by.bsuir.picasso.server.util;
 
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManagerFactory;
