@@ -3,6 +3,10 @@ package by.bsuir.picasso.client;
 import java.util.Collection;
 import java.util.HashMap;
 
+import by.bsuir.picasso.client.service.LoginService;
+import by.bsuir.picasso.client.service.LoginServiceAsync;
+import by.bsuir.picasso.client.service.MarkersDataService;
+import by.bsuir.picasso.client.service.MarkersDataServiceAsync;
 import by.bsuir.picasso.shared.LoginInfo;
 import by.bsuir.picasso.shared.MarkerStorage;
 
