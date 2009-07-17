@@ -10,9 +10,9 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public interface MarkersDataServiceAsync {
 	void getMarkerStorageList(AsyncCallback<MarkerStorage[]> callback);
 
-	void persistMarkerStorage(MarkerStorage markerStorage, AsyncCallback<Long> callback);
+	void save(MarkerStorage markerStorage, AsyncCallback<Long> callback);
 
 	void getMarkerStorage(Long id, AsyncCallback<MarkerStorage> callback);
 
-	void deleteMarkerStorage(Long id, AsyncCallback<Boolean> callback);
+	void delete(Long id, AsyncCallback<Boolean> callback);
 }

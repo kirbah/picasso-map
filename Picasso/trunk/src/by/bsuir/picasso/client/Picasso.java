@@ -140,7 +140,7 @@ public class Picasso implements EntryPoint {
 			final Marker marker = event.getSender();
 			MarkerStorage markerStorage = markersHash.get(marker);
 
-			markersDataService.deleteMarkerStorage(markerStorage.getId(), new AsyncCallback<Boolean>() {
+			markersDataService.delete(markerStorage.getId(), new AsyncCallback<Boolean>() {
 				public void onFailure(Throwable caught) {
 					Window.alert(SERVER_ERROR);
 				}
@@ -293,7 +293,7 @@ public class Picasso implements EntryPoint {
 
 	private void saveMarkerStorage(MarkerStorage marker) {
 		final MarkerStorage markerTmp = marker;
-		markersDataService.persistMarkerStorage(marker, new AsyncCallback<Long>() {
+		markersDataService.save(marker, new AsyncCallback<Long>() {
 			public void onFailure(Throwable caught) {
 				Window.alert(SERVER_ERROR);
 			}

@@ -12,9 +12,9 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface MarkersDataService extends RemoteService {
 	MarkerStorage[] getMarkerStorageList();
 
-	Long persistMarkerStorage(MarkerStorage markerStorage);
+	Long save(MarkerStorage markerStorage);
 
 	MarkerStorage getMarkerStorage(Long id);
 
-	Boolean deleteMarkerStorage(Long id);
+	Boolean delete(Long id);
 }
