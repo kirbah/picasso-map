@@ -7,6 +7,7 @@ import javax.jdo.Query;
 import javax.jdo.Transaction;
 
 import by.bsuir.picasso.client.MarkersDataService;
+import by.bsuir.picasso.server.util.PMF;
 import by.bsuir.picasso.shared.MarkerStorage;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;

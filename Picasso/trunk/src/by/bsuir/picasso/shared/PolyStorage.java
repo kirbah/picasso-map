@@ -23,7 +23,7 @@ public class PolyStorage implements IsSerializable {
   private String name;
 
   /**
-   * @see by.bsuir.picasso.shared.PolyType
+   * @see by.bsuir.picasso.shared.MapTypes
    */
   @Persistent
   private String type;
