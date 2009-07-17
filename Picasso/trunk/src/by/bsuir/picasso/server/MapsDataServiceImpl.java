@@ -7,7 +7,7 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import javax.jdo.Transaction;
 
-import by.bsuir.picasso.client.MapsDataService;
+import by.bsuir.picasso.client.service.MapsDataService;
 import by.bsuir.picasso.server.util.PMF;
 import by.bsuir.picasso.server.util.UserUtil;
 import by.bsuir.picasso.shared.MapInfo;
@@ -24,8 +24,10 @@ public class MapsDataServiceImpl extends RemoteServiceServlet implements MapsDat
 
     try {
       MapInfo mapInfo = pm.getObjectById(MapInfo.class, id);
-      pm.deletePersistent(mapInfo);
-      isDeleted = true;
+      if (UserUtil.getCurrentUserEmail().equals(mapInfo.getUserEmailAddress())) {
+        pm.deletePersistent(mapInfo);
+        isDeleted = true;
+      }
     } finally {
       pm.close();
     }

@@ -1,4 +1,4 @@
-package by.bsuir.picasso.client;
+package by.bsuir.picasso.client.service;
 
 import by.bsuir.picasso.shared.MapInfo;
 

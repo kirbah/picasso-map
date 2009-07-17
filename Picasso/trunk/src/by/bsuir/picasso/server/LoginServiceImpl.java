@@ -1,6 +1,6 @@
 package by.bsuir.picasso.server;
 
-import by.bsuir.picasso.client.LoginService;
+import by.bsuir.picasso.client.service.LoginService;
 import by.bsuir.picasso.shared.LoginInfo;
 
 import com.google.appengine.api.users.User;
