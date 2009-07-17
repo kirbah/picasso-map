@@ -30,7 +30,7 @@ public class MarkersDataServiceImpl extends RemoteServiceServlet implements Mark
 		return detachedMarkers.toArray(new MarkerStorage[0]);
 	}
 
-	public Long persistMarkerStorage(MarkerStorage markerStorage) {
+	public Long save(MarkerStorage markerStorage) {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 
 		try {
@@ -60,7 +60,7 @@ public class MarkersDataServiceImpl extends RemoteServiceServlet implements Mark
 		return markerStorage.getId();
 	}
 
-	public Boolean deleteMarkerStorage(Long id) {
+	public Boolean delete(Long id) {
 		Boolean isDeleted = false;
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 
