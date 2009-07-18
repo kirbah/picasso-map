@@ -1,6 +1,5 @@
 package by.bsuir.picasso.client;
 
-import by.bsuir.picasso.client.service.LoginService;
 import by.bsuir.picasso.client.service.LoginServiceAsync;
 import by.bsuir.picasso.shared.LoginInfo;
 
@@ -34,7 +33,7 @@ public class Picasso implements EntryPoint {
      */
 
     // Check login status using login service.
-    LoginServiceAsync loginService = GWT.create(LoginService.class);
+    LoginServiceAsync loginService = cds.getService().getLoginService();
     loginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {
       public void onFailure(Throwable error) {
       }
