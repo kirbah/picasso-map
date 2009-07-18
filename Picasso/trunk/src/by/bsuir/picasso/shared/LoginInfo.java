@@ -1,8 +1,8 @@
 package by.bsuir.picasso.shared;
 
-import java.io.Serializable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class LoginInfo implements Serializable {
+public class LoginInfo implements IsSerializable {
 
   private boolean loggedIn = false;
   private String loginUrl;
