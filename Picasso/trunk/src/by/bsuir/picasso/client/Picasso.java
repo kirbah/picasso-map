@@ -19,7 +19,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class Picasso implements EntryPoint {
-  private ClientDataStorage cds = new ClientDataStorage();
+  private final ClientDataStorage cds = new ClientDataStorage();
 
   public void onModuleLoad() {
     /*
