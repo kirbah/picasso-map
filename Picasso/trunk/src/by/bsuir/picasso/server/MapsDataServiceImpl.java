@@ -42,7 +42,7 @@ public class MapsDataServiceImpl extends RemoteServiceServlet implements MapsDat
       for (Long id : ids) {
         MapInfo mapInfo = pm.getObjectById(MapInfo.class, id);
         if (UserUtil.getCurrentUserEmail().equals(mapInfo.getUserEmailAddress())) {
-//          pm.deletePersistent(mapInfo);
+          pm.deletePersistent(mapInfo);
           isDeleted = true;
         }
       }

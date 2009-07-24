@@ -98,7 +98,7 @@ public class MenuHelper {
     window.setPlain(true);
     window.setModal(true);
     window.setBlinkModal(true);
-    window.setHeading("New Map");
+    window.setHeading("Open Map");
     window.setLayout(new FitLayout());
 
     List<MapModel> mapModel = new ArrayList<MapModel>();
