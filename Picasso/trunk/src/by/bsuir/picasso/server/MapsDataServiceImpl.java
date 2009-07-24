@@ -34,6 +34,24 @@ public class MapsDataServiceImpl extends RemoteServiceServlet implements MapsDat
     return isDeleted;
   }
 
+  public Boolean delete(Long[] ids) {
+    Boolean isDeleted = false;
+    PersistenceManager pm = PMF.get().getPersistenceManager();
+
+    try {
+      for (Long id : ids) {
+        MapInfo mapInfo = pm.getObjectById(MapInfo.class, id);
+        if (UserUtil.getCurrentUserEmail().equals(mapInfo.getUserEmailAddress())) {
+//          pm.deletePersistent(mapInfo);
+          isDeleted = true;
+        }
+      }
+    } finally {
+      pm.close();
+    }
+    return isDeleted;
+  }
+
   public MapInfo findOpenMap() {
     MapInfo openMap = null;
     PersistenceManager pm = PMF.get().getPersistenceManager();
