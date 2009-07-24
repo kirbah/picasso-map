@@ -18,6 +18,7 @@ import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FormButtonBinding;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.TextField;
+import com.extjs.gxt.ui.client.widget.grid.CheckBoxSelectionModel;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
@@ -100,7 +101,15 @@ public class MenuHelper {
     window.setHeading("New Map");
     window.setLayout(new FitLayout());
 
+    List<MapModel> mapModel = new ArrayList<MapModel>();
+    for (MapInfo mi : mapInfo) {
+      mapModel.add(new MapModel(mi.getMapId(), mi.getName(), mi.getUpdateDate()));
+    }
+
     List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
+
+    final CheckBoxSelectionModel<MapModel> sm = new CheckBoxSelectionModel<MapModel>();
+    configs.add(sm.getColumn());
 
     ColumnConfig column = new ColumnConfig("name", "Map Name", 200);
     configs.add(column);
@@ -121,19 +130,16 @@ public class MenuHelper {
     cp.setLayout(new FitLayout());
     // cp.setSize(600, 300);
 
-    List<MapModel> mapModel = new ArrayList<MapModel>();
-    for (MapInfo mi : mapInfo) {
-      mapModel.add(new MapModel(mi.getMapId(), mi.getName(), mi.getUpdateDate()));
-    }
-
     ListStore<MapModel> mapStore = new ListStore<MapModel>();
     mapStore.add(mapModel);
 
     Grid<MapModel> grid = new Grid<MapModel>(mapStore, cm);
+    grid.setSelectionModel(sm);
     grid.setStyleAttribute("borderTop", "none");
     grid.setAutoExpandColumn("name");
     grid.setBorders(true);
     grid.setStripeRows(true);
+    grid.addPlugin(sm);
 
     window.add(grid);
 
@@ -142,17 +148,35 @@ public class MenuHelper {
     openBtn.addSelectionListener(new SelectionListener<ButtonEvent>() {
       public void componentSelected(ButtonEvent ce) {
         MapsDataServiceAsync mapsDataService = cds.getService().getMapsDataService();
-        final MapInfo mapInfo = null;
-/*
-        mapsDataService.save(mapInfo, new AsyncCallback<Long>() {
-          public void onFailure(Throwable caught) {
-          }
+        List<MapModel> selected = sm.getSelectedItems();
+        if (selected.size() > 0) {
+          Long mapId = selected.get(0).getMapId();
+          // TODO show map
+        }
+      }
+    });
 
-          public void onSuccess(Long result) {
-            // TODO show map
+    Button deleteBtn = new Button("Delete");
+    window.addButton(deleteBtn);
+    deleteBtn.addSelectionListener(new SelectionListener<ButtonEvent>() {
+      public void componentSelected(ButtonEvent ce) {
+        List<MapModel> selected = sm.getSelectedItems();
+        if (selected.size() > 0) {
+          MapsDataServiceAsync mapsDataService = cds.getService().getMapsDataService();
+          List<Long> selectedIds = new ArrayList<Long>();
+          for (MapModel selectedModel : selected) {
+            selectedIds.add(selectedModel.getMapId());
           }
-        });
-*/
+          mapsDataService.delete(selectedIds.toArray(new Long[0]), new AsyncCallback<Boolean>() {
+            public void onFailure(Throwable caught) {
+            }
+
+            public void onSuccess(Boolean result) {
+              window.hide();
+              openMapWindow(cds);
+            }
+          });
+        }
       }
     });
 
