@@ -133,7 +133,7 @@ public class MenuHelper {
     ListStore<MapModel> mapStore = new ListStore<MapModel>();
     mapStore.add(mapModel);
 
-    Grid<MapModel> grid = new Grid<MapModel>(mapStore, cm);
+    final Grid<MapModel> grid = new Grid<MapModel>(mapStore, cm);
     grid.setSelectionModel(sm);
     grid.setStyleAttribute("borderTop", "none");
     grid.setAutoExpandColumn("name");
@@ -160,7 +160,7 @@ public class MenuHelper {
     window.addButton(deleteBtn);
     deleteBtn.addSelectionListener(new SelectionListener<ButtonEvent>() {
       public void componentSelected(ButtonEvent ce) {
-        List<MapModel> selected = sm.getSelectedItems();
+        final List<MapModel> selected = sm.getSelectedItems();
         if (selected.size() > 0) {
           MapsDataServiceAsync mapsDataService = cds.getService().getMapsDataService();
           List<Long> selectedIds = new ArrayList<Long>();
@@ -172,8 +172,9 @@ public class MenuHelper {
             }
 
             public void onSuccess(Boolean result) {
-              window.hide();
-              openMapWindow(cds);
+              for (MapModel selectedModel : selected) {
+                grid.getStore().remove(selectedModel);
+              }
             }
           });
         }
