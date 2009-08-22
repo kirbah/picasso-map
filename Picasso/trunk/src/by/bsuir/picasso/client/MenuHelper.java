@@ -31,6 +31,7 @@ import com.extjs.gxt.ui.client.widget.menu.MenuBarItem;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
 import com.extjs.gxt.ui.client.widget.menu.SeparatorMenuItem;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class MenuHelper {
@@ -53,6 +54,15 @@ public class MenuHelper {
     item2.addSelectionListener(new SelectionListener<MenuEvent>() {
       public void componentSelected(MenuEvent ce) {
         openMapWindow(cds);
+      }
+    });
+
+    MenuItem itemSave = new MenuItem("Save");
+    menu.add(itemSave);
+
+    itemSave.addSelectionListener(new SelectionListener<MenuEvent>() {
+      public void componentSelected(MenuEvent ce) {
+        saveMapChanges(cds);
       }
     });
 
@@ -254,4 +264,27 @@ public class MenuHelper {
 
     return window;
   }
+
+  private static void saveMapChanges(final ClientDataStorage cds) {
+    MapsDataServiceAsync mapsDataService = cds.getService().getMapsDataService();
+    mapsDataService.findOpenMap(new AsyncCallback<MapInfo>() {
+      public void onFailure(Throwable caught) {
+      }
+      public void onSuccess(MapInfo mapInfo) {
+        MapWidget map = cds.getMap();
+        // Save current Map position
+        mapInfo.setCenter(map.getCenter());
+        mapInfo.setZoomLevel(map.getZoomLevel());
+
+        MapsDataServiceAsync mapsDataService = cds.getService().getMapsDataService();
+        mapsDataService.save(mapInfo, new AsyncCallback<Long>() {
+          public void onFailure(Throwable caught) {
+          }
+          public void onSuccess(Long result) {
+          }
+        });
+      }
+    });
+  }
+
 }
