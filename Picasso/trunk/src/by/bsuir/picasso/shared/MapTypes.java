@@ -7,4 +7,5 @@ public final class MapTypes implements IsSerializable {
   public static final String POLYLINE = "POLYLINE";
 
   public static final String MAP_OPEN = "Open";
+  public static final String MAP_CLOSED = "";
 }
