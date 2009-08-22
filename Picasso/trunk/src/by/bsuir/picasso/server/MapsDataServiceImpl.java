@@ -88,7 +88,6 @@ public class MapsDataServiceImpl extends RemoteServiceServlet implements MapsDat
     return detachedMaps.toArray(new MapInfo[0]);
   }
 
-  @Override
   public Long save(MapInfo mapInfo) {
     PersistenceManager pm = PMF.get().getPersistenceManager();
 
@@ -125,6 +124,43 @@ public class MapsDataServiceImpl extends RemoteServiceServlet implements MapsDat
     }
 
     return mapInfo.getMapId();
+  }
+
+  public MapInfo openMap(Long mapId) {
+    MapInfo openMap = null;
+    PersistenceManager pm = PMF.get().getPersistenceManager();
+
+    try {
+      Transaction tx = pm.currentTransaction();
+      try {
+        // Close open Maps
+        tx.begin();
+        Query query = pm.newQuery(MapInfo.class, "status == '" + MapTypes.MAP_OPEN + "'");
+        List<MapInfo> mapInfos = (List<MapInfo>) query.execute();
+        for (MapInfo mapInfo : mapInfos) {
+          mapInfo.setStatus(MapTypes.MAP_CLOSED);
+        }
+        tx.commit();
+
+        // Open selected Map
+        tx.begin();
+        MapInfo managedMapInfo = pm.getObjectById(MapInfo.class, mapId);
+        if (UserUtil.getCurrentUserEmail().equals(managedMapInfo.getUserEmailAddress())) {
+          // Update maps only for current user
+          managedMapInfo.setStatus(MapTypes.MAP_OPEN);
+          openMap = pm.detachCopy(managedMapInfo);
+        }
+        tx.commit();
+      } catch (Exception e) {
+        if (tx.isActive()) {
+          tx.rollback();
+        }
+      }
+    } finally {
+      pm.close();
+    }
+
+    return openMap;
   }
 
 }

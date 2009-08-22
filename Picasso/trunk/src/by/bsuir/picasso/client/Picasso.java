@@ -12,6 +12,10 @@ import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.extjs.gxt.ui.client.widget.menu.MenuBar;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.maps.client.MapType;
+import com.google.gwt.maps.client.MapWidget;
+import com.google.gwt.maps.client.Maps;
+import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Label;
@@ -22,15 +26,13 @@ public class Picasso implements EntryPoint {
   private final ClientDataStorage cds = new ClientDataStorage();
 
   public void onModuleLoad() {
-    /*
-      if (!Maps.isLoaded()) {
-       com.google.gwt.user.client.Window.alert("The Maps API is not installed."
-       + " The <script> tag that loads the Maps API may be missing or your Maps key may be wrong."); return; }
-      
-      if (!Maps.isBrowserCompatible()) {
-        com.google.gwt.user.client.Window.alert("The Maps API is not compatible with this browser."); return;
-      }
-     */
+    if (!Maps.isLoaded()) {
+     com.google.gwt.user.client.Window.alert("The Maps API is not installed."
+     + " The <script> tag that loads the Maps API may be missing or your Maps key may be wrong."); return; }
+
+    if (!Maps.isBrowserCompatible()) {
+      com.google.gwt.user.client.Window.alert("The Maps API is not compatible with this browser."); return;
+    }
 
     // Check login status using login service.
     LoginServiceAsync loginService = cds.getService().getLoginService();
@@ -99,13 +101,17 @@ public class Picasso implements EntryPoint {
   private ContentPanel buildMapPanel() {
     ContentPanel center = new ContentPanel();
     center.setHeading("Map");
-    /*
-     * map = new MapWidget(LatLng.newInstance(37.4419, -122.1419), 13);
-     * map.setSize("250px", "150px"); map.addMapType(MapType.getHybridMap());
-     * map.setCurrentMapType(MapType.getHybridMap()); center.add(map);
-     * //center.addListener(eventType, listener);
-     * //center.setMonitorWindowResize(true);
-     */
+
+    MapWidget map = new MapWidget(LatLng.newInstance(37.4419, -122.1419), 13);
+    cds.setMap(map);
+
+    map.setSize("250px", "150px");
+    map.addMapType(MapType.getHybridMap());
+    map.setCurrentMapType(MapType.getHybridMap());
+    center.add(map);
+     //center.addListener(eventType, listener);
+     //center.setMonitorWindowResize(true);
+
     return center;
   }
 
