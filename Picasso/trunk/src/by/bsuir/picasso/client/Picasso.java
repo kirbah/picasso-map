@@ -124,20 +124,11 @@ public class Picasso implements EntryPoint {
     Size size = Size.newInstance(400, 300);
     map.setSize(size.getWidth() + "px", size.getHeight() + "px");
     MapUIOptions options = MapUIOptions.newInstance(size);
-    //options.setHybridMapType(true);
-    //options.setLargeMapControl3d(true);
-    //options.setScrollwheel(true);
     map.setUI(options);
-    /*
-    map.setSize("250px", "150px");
-    map.addControl(new SmallMapControl());
-    map.addControl(new MapTypeControl());
-    map.addMapType(MapType.getHybridMap());
-    map.setCurrentMapType(MapType.getHybridMap());
-    */
     center.add(map);
-     //center.addListener(eventType, listener);
-     //center.setMonitorWindowResize(true);
+
+    //center.addListener(eventType, listener);
+    //center.setMonitorWindowResize(true);
 
     cds.setMapContentPanel(center);
     cds.setMap(map);
