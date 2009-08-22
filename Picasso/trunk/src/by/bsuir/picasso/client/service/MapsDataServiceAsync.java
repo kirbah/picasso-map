@@ -14,4 +14,6 @@ public interface MapsDataServiceAsync {
   void delete(Long[] ids, AsyncCallback<Boolean> callback);
 
   void findOpenMap(AsyncCallback<MapInfo> callback);
+
+  void openMap(Long mapId, AsyncCallback<MapInfo> callback);
 }

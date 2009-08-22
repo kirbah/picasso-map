@@ -147,11 +147,11 @@ public class MenuHelper {
     window.addButton(openBtn);
     openBtn.addSelectionListener(new SelectionListener<ButtonEvent>() {
       public void componentSelected(ButtonEvent ce) {
-        MapsDataServiceAsync mapsDataService = cds.getService().getMapsDataService();
         List<MapModel> selected = sm.getSelectedItems();
         if (selected.size() > 0) {
           Long mapId = selected.get(0).getMapId();
-          // TODO show map
+          window.hide();
+          MapHelper.openMap(cds, mapId);
         }
       }
     });
@@ -222,13 +222,16 @@ public class MenuHelper {
         MapsDataServiceAsync mapsDataService = cds.getService().getMapsDataService();
         final MapInfo mapInfo = new MapInfo();
         mapInfo.setName(firstName.getValue());
+        mapInfo.setLatitude(37);
+        mapInfo.setLongitude(-122);
+        mapInfo.setZoomLevel(10);
         mapsDataService.save(mapInfo, new AsyncCallback<Long>() {
           public void onFailure(Throwable caught) {
           }
 
           public void onSuccess(Long result) {
-            mapInfo.setMapId(result);
-            // TODO show map
+            window.hide();
+            MapHelper.openMap(cds, result);
           }
         });
         firstName.setValue("");
