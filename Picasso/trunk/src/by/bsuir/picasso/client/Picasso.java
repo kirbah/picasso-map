@@ -1,7 +1,10 @@
 package by.bsuir.picasso.client;
 
+import by.bsuir.picasso.client.data.ClientDataStorage;
 import by.bsuir.picasso.client.service.LoginServiceAsync;
+import by.bsuir.picasso.client.service.MapsDataServiceAsync;
 import by.bsuir.picasso.shared.LoginInfo;
+import by.bsuir.picasso.shared.MapInfo;
 
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
 import com.extjs.gxt.ui.client.util.Margins;
@@ -96,6 +99,16 @@ public class Picasso implements EntryPoint {
     viewport.setLayout(new BorderLayout());
     viewport.add(panel, new BorderLayoutData(LayoutRegion.CENTER));
     RootPanel.get().add(viewport);
+
+    // Show open map
+    MapsDataServiceAsync mapsDataService = cds.getService().getMapsDataService();
+    mapsDataService.findOpenMap(new AsyncCallback<MapInfo>() {
+      public void onFailure(Throwable caught) {
+      }
+      public void onSuccess(MapInfo mapInfo) {
+        MapHelper.showMap(cds, mapInfo);
+      }
+    });
   }
 
   private ContentPanel buildMapPanel() {
@@ -103,7 +116,6 @@ public class Picasso implements EntryPoint {
     center.setHeading("Map");
 
     MapWidget map = new MapWidget(LatLng.newInstance(37.4419, -122.1419), 13);
-    cds.setMap(map);
 
     map.setSize("250px", "150px");
     map.addMapType(MapType.getHybridMap());
@@ -112,6 +124,8 @@ public class Picasso implements EntryPoint {
      //center.addListener(eventType, listener);
      //center.setMonitorWindowResize(true);
 
+    cds.setMapContentPanel(center);
+    cds.setMap(map);
     return center;
   }
 

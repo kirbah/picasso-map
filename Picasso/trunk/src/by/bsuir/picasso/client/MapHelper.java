@@ -1,5 +1,6 @@
 package by.bsuir.picasso.client;
 
+import by.bsuir.picasso.client.data.ClientDataStorage;
 import by.bsuir.picasso.client.service.MapsDataServiceAsync;
 import by.bsuir.picasso.shared.MapInfo;
 
@@ -16,16 +17,18 @@ public class MapHelper {
       }
 
       public void onSuccess(MapInfo mapInfo) {
-        // TODO show map
         if (mapInfo != null) {
-          MapWidget map = cds.getMap();
-          map.setCenter(mapInfo.getCenter());
-          map.setZoomLevel(mapInfo.getZoomLevel());
-
+          showMap(cds, mapInfo);
         }
       }
     });
+  }
 
+  public static void showMap(final ClientDataStorage cds, MapInfo mapInfo) {
+    cds.getMapContentPanel().setHeading(mapInfo.getName());
+    MapWidget map = cds.getMap();
+    map.setCenter(mapInfo.getCenter());
+    map.setZoomLevel(mapInfo.getZoomLevel());
   }
   
 }
