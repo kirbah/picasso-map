@@ -16,9 +16,13 @@ import com.extjs.gxt.ui.client.widget.menu.MenuBar;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.maps.client.MapType;
+import com.google.gwt.maps.client.MapUIOptions;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.Maps;
+import com.google.gwt.maps.client.control.MapTypeControl;
+import com.google.gwt.maps.client.control.SmallMapControl;
 import com.google.gwt.maps.client.geom.LatLng;
+import com.google.gwt.maps.client.geom.Size;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Label;
@@ -115,11 +119,22 @@ public class Picasso implements EntryPoint {
     ContentPanel center = new ContentPanel();
     center.setHeading("Map");
 
-    MapWidget map = new MapWidget(LatLng.newInstance(37.4419, -122.1419), 13);
+    MapWidget map = new MapWidget(LatLng.newInstance(0, 0), 0);
 
+    Size size = Size.newInstance(400, 300);
+    map.setSize(size.getWidth() + "px", size.getHeight() + "px");
+    MapUIOptions options = MapUIOptions.newInstance(size);
+    //options.setHybridMapType(true);
+    //options.setLargeMapControl3d(true);
+    //options.setScrollwheel(true);
+    map.setUI(options);
+    /*
     map.setSize("250px", "150px");
+    map.addControl(new SmallMapControl());
+    map.addControl(new MapTypeControl());
     map.addMapType(MapType.getHybridMap());
     map.setCurrentMapType(MapType.getHybridMap());
+    */
     center.add(map);
      //center.addListener(eventType, listener);
      //center.setMonitorWindowResize(true);
