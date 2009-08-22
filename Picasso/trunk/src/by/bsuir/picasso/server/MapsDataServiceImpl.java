@@ -57,7 +57,7 @@ public class MapsDataServiceImpl extends RemoteServiceServlet implements MapsDat
     PersistenceManager pm = PMF.get().getPersistenceManager();
 
     Query query = pm.newQuery(MapInfo.class);
-    query.setFilter("userEmailAddress == userEmail AND status='" + MapTypes.MAP_OPEN + "'");
+    query.setFilter("userEmailAddress == userEmail && status == '" + MapTypes.MAP_OPEN + "'");
     query.setOrdering("updateDate desc");
     query.declareParameters("String userEmail");
     String userEmail = UserUtil.getCurrentUserEmail();

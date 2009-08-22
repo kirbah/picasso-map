@@ -3,6 +3,7 @@ package by.bsuir.picasso.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import by.bsuir.picasso.client.data.ClientDataStorage;
 import by.bsuir.picasso.client.data.MapModel;
 import by.bsuir.picasso.client.service.MapsDataServiceAsync;
 import by.bsuir.picasso.shared.MapInfo;
