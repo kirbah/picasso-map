@@ -7,6 +7,9 @@ import by.bsuir.picasso.shared.LoginInfo;
 import by.bsuir.picasso.shared.MapInfo;
 
 import com.extjs.gxt.ui.client.Style.LayoutRegion;
+import com.extjs.gxt.ui.client.event.BoxComponentEvent;
+import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.Viewport;
@@ -15,12 +18,9 @@ import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.extjs.gxt.ui.client.widget.menu.MenuBar;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.maps.client.MapType;
 import com.google.gwt.maps.client.MapUIOptions;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.Maps;
-import com.google.gwt.maps.client.control.MapTypeControl;
-import com.google.gwt.maps.client.control.SmallMapControl;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.geom.Size;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -116,10 +116,10 @@ public class Picasso implements EntryPoint {
   }
 
   private ContentPanel buildMapPanel() {
-    ContentPanel center = new ContentPanel();
+    final ContentPanel center = new ContentPanel();
     center.setHeading("Map");
 
-    MapWidget map = new MapWidget(LatLng.newInstance(0, 0), 0);
+    final MapWidget map = new MapWidget(LatLng.newInstance(0, 0), 0);
 
     Size size = Size.newInstance(400, 300);
     map.setSize(size.getWidth() + "px", size.getHeight() + "px");
@@ -127,8 +127,14 @@ public class Picasso implements EntryPoint {
     map.setUI(options);
     center.add(map);
 
-    //center.addListener(eventType, listener);
-    //center.setMonitorWindowResize(true);
+    center.addListener(Events.Resize, new Listener<BoxComponentEvent>() {
+      public void handleEvent(BoxComponentEvent be) {
+        int width = center.getInnerWidth();
+        int height = center.getInnerHeight();
+        map.setSize(width + "px", height + "px");
+      }
+    });
+    center.setMonitorWindowResize(true);
 
     cds.setMapContentPanel(center);
     cds.setMap(map);
