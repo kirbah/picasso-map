@@ -5,6 +5,7 @@ import by.bsuir.picasso.client.service.MapsDataServiceAsync;
 import by.bsuir.picasso.shared.MapInfo;
 
 import com.google.gwt.maps.client.MapWidget;
+import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
@@ -27,8 +28,8 @@ public class MapHelper {
   public static void showMap(final ClientDataStorage cds, MapInfo mapInfo) {
     cds.getMapContentPanel().setHeading(mapInfo.getName());
     MapWidget map = cds.getMap();
-    map.setCenter(mapInfo.getCenter());
+    map.setCenter(LatLng.newInstance(mapInfo.getLatitude(), mapInfo.getLongitude()));
     map.setZoomLevel(mapInfo.getZoomLevel());
   }
-  
+
 }
