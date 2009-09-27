@@ -8,7 +8,6 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
@@ -44,15 +43,6 @@ public class MapInfo implements IsSerializable {
    */
   @Persistent
   private String status;
-
-  public LatLng getCenter() {
-    return LatLng.newInstance(getLatitude(), getLongitude());
-  }
-
-  public void setCenter(LatLng latLng) {
-    latitude = latLng.getLatitude();
-    longitude = latLng.getLongitude();
-  }
 
   public String getName() {
     return name;

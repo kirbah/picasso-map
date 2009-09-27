@@ -273,7 +273,8 @@ public class MenuHelper {
       public void onSuccess(MapInfo mapInfo) {
         MapWidget map = cds.getMap();
         // Save current Map position
-        mapInfo.setCenter(map.getCenter());
+        mapInfo.setLatitude(map.getCenter().getLatitude());
+        mapInfo.setLongitude(map.getCenter().getLongitude());
         mapInfo.setZoomLevel(map.getZoomLevel());
 
         MapsDataServiceAsync mapsDataService = cds.getService().getMapsDataService();
