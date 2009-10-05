@@ -1,6 +1,7 @@
 package by.bsuir.picasso.client;
 
 import by.bsuir.picasso.client.data.ClientDataStorage;
+import by.bsuir.picasso.client.images.AppImages;
 import by.bsuir.picasso.client.service.LoginServiceAsync;
 import by.bsuir.picasso.client.service.MapsDataServiceAsync;
 import by.bsuir.picasso.shared.LoginInfo;
@@ -13,9 +14,14 @@ import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
 import com.extjs.gxt.ui.client.widget.Viewport;
+import com.extjs.gxt.ui.client.widget.button.Button;
+import com.extjs.gxt.ui.client.widget.layout.AccordionLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
+import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.menu.MenuBar;
+import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
+import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.maps.client.MapUIOptions;
@@ -31,6 +37,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class Picasso implements EntryPoint {
   private final ClientDataStorage cds = new ClientDataStorage();
+  public static final AppImages IMAGES = GWT.create(AppImages.class);
 
   public void onModuleLoad() {
     if (!Maps.isLoaded()) {
@@ -70,8 +77,8 @@ public class Picasso implements EntryPoint {
   }
 
   public void loadApplicationUI() {
-    ContentPanel west = new ContentPanel();
-    west.setHeading("Markers");
+    ContentPanel west = buildMarkersPanel();
+
     ContentPanel center = buildMapPanel();
     ContentPanel south = new ContentPanel();
     south.setHeading("Properties");
@@ -113,6 +120,43 @@ public class Picasso implements EntryPoint {
         MapHelper.showMap(cds, mapInfo);
       }
     });
+  }
+
+  private ContentPanel buildMarkersPanel() {
+    ContentPanel west = new ContentPanel();
+    west.setHeading("Markers");
+    west.setLayout(new AccordionLayout());
+
+    ToolBar toolBar = new ToolBar();
+    Button item = new Button();
+    item.setToolTip("New Marker");
+    item.setIcon(IMAGES.markerAdd());
+    toolBar.add(item);
+
+    item = new Button();
+    item.setToolTip("New Polyline");
+    item.setIcon(IMAGES.polilyneAdd());
+    toolBar.add(item);
+
+    toolBar.add(new SeparatorToolItem());
+
+    item = new Button();
+    item.setToolTip("Delete");
+    item.setIcon(IMAGES.delete());
+    toolBar.add(item);
+
+    west.setTopComponent(toolBar);
+
+    ContentPanel cp = new ContentPanel();
+    cp.setHeading("Markers");
+    cp.setLayout(new FitLayout());
+    west.add(cp);
+
+    ContentPanel cp2 = new ContentPanel();
+    cp2.setHeading("Polylines");
+    cp2.setLayout(new FitLayout());
+    west.add(cp2);
+    return west;
   }
 
   private ContentPanel buildMapPanel() {
