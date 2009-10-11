@@ -29,27 +29,28 @@ public class MarkersPanelHelper {
     west.setLayout(new AccordionLayout());
 
     ToolBar toolBar = new ToolBar();
-    Button item = new Button();
+    final Button item = new Button();
     item.setToolTip("New Marker");
     item.setIcon(Picasso.IMAGES.markerAdd());
     item.addSelectionListener(new SelectionListener<ButtonEvent>() {
       public void componentSelected(ButtonEvent ce) {
-        cds.getMarkersStore().add(new MarkerModel(8L, "name 8"));
+        ToolbarMarkerHelper.addMarkerButton(cds);
+        //cds.getMarkersStore().add(new MarkerModel(8L, "name 8"));
       }
     });
     toolBar.add(item);
 
-    item = new Button();
-    item.setToolTip("New Polyline");
-    item.setIcon(Picasso.IMAGES.polilyneAdd());
-    toolBar.add(item);
+    Button itemPolyline = new Button();
+    itemPolyline.setToolTip("New Polyline");
+    itemPolyline.setIcon(Picasso.IMAGES.polilyneAdd());
+    toolBar.add(itemPolyline);
 
     toolBar.add(new SeparatorToolItem());
 
-    item = new Button();
-    item.setToolTip("Delete");
-    item.setIcon(Picasso.IMAGES.delete());
-    toolBar.add(item);
+    Button itemDelete = new Button();
+    itemDelete.setToolTip("Delete");
+    itemDelete.setIcon(Picasso.IMAGES.delete());
+    toolBar.add(itemDelete);
 
     west.setTopComponent(toolBar);
 
@@ -73,9 +74,9 @@ public class MarkersPanelHelper {
 
     ListStore<MarkerModel> markersStore = new ListStore<MarkerModel>();
     cds.setMarkersStore(markersStore);
-    markersStore.add(new MarkerModel(1L, "name 1"));
-    markersStore.add(new MarkerModel(2L, "Name 2"));
-    markersStore.add(new MarkerModel(3L, "test 3"));
+    markersStore.add(new MarkerModel("name 1"));
+    markersStore.add(new MarkerModel("Name 2"));
+    markersStore.add(new MarkerModel("test 3"));
 
     final EditorGrid<MarkerModel> grid = new EditorGrid<MarkerModel>(markersStore, cm);
     grid.setAutoExpandColumn("name");
