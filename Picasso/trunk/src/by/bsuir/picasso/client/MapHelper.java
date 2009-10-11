@@ -26,10 +26,16 @@ public class MapHelper {
   }
 
   public static void showMap(final ClientDataStorage cds, MapInfo mapInfo) {
-    cds.getMapContentPanel().setHeading(mapInfo.getName());
-    MapWidget map = cds.getMap();
-    map.setCenter(LatLng.newInstance(mapInfo.getLatitude(), mapInfo.getLongitude()));
-    map.setZoomLevel(mapInfo.getZoomLevel());
+    if (mapInfo != null) {
+      cds.getMapContentPanel().setHeading(mapInfo.getName());
+      MapWidget map = cds.getMap();
+      map.setVisible(true);
+      map.setCenter(LatLng.newInstance(mapInfo.getLatitude(), mapInfo.getLongitude()));
+      map.setZoomLevel(mapInfo.getZoomLevel());
+    } else {
+      MapWidget map = cds.getMap();
+      map.setVisible(false);
+    }
   }
 
 }
