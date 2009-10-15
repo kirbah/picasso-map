@@ -11,11 +11,8 @@ import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.event.MapClickHandler;
-import com.google.gwt.maps.client.event.MarkerClickHandler;
-import com.google.gwt.maps.client.event.MarkerDragEndHandler;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.overlay.Marker;
-import com.google.gwt.maps.client.overlay.MarkerOptions;
 
 public class ToolbarMarkerHelper {
   public static void addMarkerButton(final ClientDataStorage cds) {
@@ -34,9 +31,10 @@ public class ToolbarMarkerHelper {
               MapWidget sender = e.getSender();
               // Overlay overlay = e.getOverlay();
               LatLng point = e.getLatLng();
-              addedMarker.setLatLng(point);
+              addedMarker.setLatitude(point.getLatitude());
+              addedMarker.setLongitude(point.getLongitude());
 
-              final Marker marker = createMarker(addedMarker);
+              final Marker marker = MapHelper.createMarker(addedMarker);
               sender.addOverlay(marker);
               cds.getMarkersStore().add(new MarkerModel(addedMarker, marker));
             }
@@ -44,46 +42,8 @@ public class ToolbarMarkerHelper {
         } else {
 
         }
-        //Info.display("MessageBox", "You entered '{0}'", new Params(btn.getItemId()));
       }
     });
   }
 
-  private static Marker createMarker(MarkerStorage markerStore) {
-    MarkerOptions options = MarkerOptions.newInstance();
-    options.setDraggable(true);
-    options.setTitle(markerStore.getName());
-    final Marker marker = new Marker(markerStore.getLatLng(), options);
-    marker.addMarkerDragEndHandler(new MyMarkerDragEndHandler());
-    marker.addMarkerClickHandler(new MyMarkerClickHandler());
-    return marker;
-  }
-
-  static class MyMarkerDragEndHandler implements MarkerDragEndHandler {
-    public void onDragEnd(MarkerDragEndEvent event) {
-      Marker marker = event.getSender();
-      /*
-       * MarkerStorage markerStore = markersHash.get(marker);
-       * markerStore.setLatLng(marker.getLatLng());
-       * saveMarkerStorage(markerStore);
-       */
-    }
-  }
-
-  static class MyMarkerClickHandler implements MarkerClickHandler {
-    public void onClick(MarkerClickEvent event) {
-      final Marker marker = event.getSender();
-      /*
-       * MarkerStorage markerStorage = markersHash.get(marker);
-       * 
-       * markersDataService.delete(markerStorage.getId(), new
-       * AsyncCallback<Boolean>() { public void onFailure(Throwable caught) {
-       * Window.alert(SERVER_ERROR); }
-       * 
-       * public void onSuccess(Boolean result) { if (result) {
-       * markersHash.remove(marker); map.removeOverlay(marker);
-       * showMarkersTable(); } } });
-       */
-    }
-  }
 }

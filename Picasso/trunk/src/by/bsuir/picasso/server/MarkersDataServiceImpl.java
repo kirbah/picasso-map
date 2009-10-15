@@ -1,5 +1,6 @@
 package by.bsuir.picasso.server;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
@@ -34,36 +35,42 @@ public class MarkersDataServiceImpl extends RemoteServiceServlet implements Mark
     return detachedMarkers.toArray(new MarkerStorage[0]);
   }
 
-  public Long save(MarkerStorage markerStorage) {
+  public Long[] save(MarkerStorage[] markerStorages) {
+    List<Long> result = new ArrayList<Long>();
     PersistenceManager pm = PMF.get().getPersistenceManager();
 
     try {
-      if (markerStorage.getId() == null || markerStorage.getId() == 0) {
-        // Save new marker
-        pm.makePersistent(markerStorage);
-      } else {
-        // Update exist marker
-        Transaction tx = pm.currentTransaction();
-        try {
-          tx.begin();
-          MarkerStorage managedMarker = pm.getObjectById(MarkerStorage.class, markerStorage.getId());
-          if (CacheUtil.getOpenMapId() == managedMarker.getMapId()) {
-            managedMarker.setLatitude(markerStorage.getLatitude());
-            managedMarker.setLongitude(markerStorage.getLongitude());
-            managedMarker.setName(managedMarker.getName());
-          }
-          tx.commit();
-        } catch (Exception e) {
-          if (tx.isActive()) {
-            tx.rollback();
+      for (int i = 0; i < markerStorages.length; i++) {
+        MarkerStorage markerStorage = markerStorages[i];
+        markerStorage.setMapId(CacheUtil.getOpenMapId());
+        if (markerStorage.getId() == null || markerStorage.getId() == 0) {
+          // Save new marker
+          pm.makePersistent(markerStorage);
+        } else {
+          // Update exist marker
+          Transaction tx = pm.currentTransaction();
+          try {
+            tx.begin();
+            MarkerStorage managedMarker = pm.getObjectById(MarkerStorage.class, markerStorage.getId());
+            if (CacheUtil.getOpenMapId() == managedMarker.getMapId()) {
+              managedMarker.setLatitude(markerStorage.getLatitude());
+              managedMarker.setLongitude(markerStorage.getLongitude());
+              managedMarker.setName(managedMarker.getName());
+            }
+            tx.commit();
+          } catch (Exception e) {
+            if (tx.isActive()) {
+              tx.rollback();
+            }
           }
         }
+        result.add(markerStorage.getId());
       }
     } finally {
       pm.close();
     }
 
-    return markerStorage.getId();
+    return result.toArray(new Long[0]);
   }
 
   public Boolean delete(Long id) {
