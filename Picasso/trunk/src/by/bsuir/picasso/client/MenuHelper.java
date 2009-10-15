@@ -5,8 +5,11 @@ import java.util.List;
 
 import by.bsuir.picasso.client.data.ClientDataStorage;
 import by.bsuir.picasso.client.data.MapModel;
+import by.bsuir.picasso.client.data.MarkerModel;
 import by.bsuir.picasso.client.service.MapsDataServiceAsync;
+import by.bsuir.picasso.client.service.MarkersDataServiceAsync;
 import by.bsuir.picasso.shared.MapInfo;
+import by.bsuir.picasso.shared.MarkerStorage;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -282,6 +285,27 @@ public class MenuHelper {
           public void onFailure(Throwable caught) {
           }
           public void onSuccess(Long result) {
+          }
+        });
+
+        // Save markers
+        MarkersDataServiceAsync markersDataService = cds.getService().getMarkersDataService();
+        List<MarkerStorage> msl = new ArrayList<MarkerStorage>();
+        for (MarkerModel markerModel : cds.getMarkersStore().getModels()) {
+          MarkerStorage markerStorage = markerModel.getMarkerStorage();
+          msl.add(markerStorage);
+        }
+        final MarkerStorage[] msa = msl.toArray(new MarkerStorage[0]);
+        markersDataService.save(msa,  new AsyncCallback<Long[]>() {
+          public void onFailure(Throwable caught) {
+          }
+          public void onSuccess(Long[] result) {
+            if (result != null) {
+              for (int i = 0; i < msa.length && i < result.length; i++) {
+                MarkerStorage markerStorage = msa[i];
+                markerStorage.setId(result[i]);
+              }
+            }
           }
         });
       }

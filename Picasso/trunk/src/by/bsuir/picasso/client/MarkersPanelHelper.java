@@ -72,12 +72,7 @@ public class MarkersPanelHelper {
 
     ColumnModel cm = new ColumnModel(configs);
 
-    ListStore<MarkerModel> markersStore = new ListStore<MarkerModel>();
-    cds.setMarkersStore(markersStore);
-    markersStore.add(new MarkerModel("name 1"));
-    markersStore.add(new MarkerModel("Name 2"));
-    markersStore.add(new MarkerModel("test 3"));
-
+    ListStore<MarkerModel> markersStore = cds.getMarkersStore();
     final EditorGrid<MarkerModel> grid = new EditorGrid<MarkerModel>(markersStore, cm);
     grid.setAutoExpandColumn("name");
     grid.setBorders(true);

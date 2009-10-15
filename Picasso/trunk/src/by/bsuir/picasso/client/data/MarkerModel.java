@@ -11,7 +11,8 @@ public class MarkerModel extends BaseModel {
 
   public MarkerStorage getMarkerStorage() {
     _markerStorage.setName(getName());
-    _markerStorage.setLatLng(_marker.getLatLng());
+    _markerStorage.setLatitude(_marker.getLatLng().getLatitude());
+    _markerStorage.setLongitude(_marker.getLatLng().getLongitude());
     return _markerStorage;
   }
 

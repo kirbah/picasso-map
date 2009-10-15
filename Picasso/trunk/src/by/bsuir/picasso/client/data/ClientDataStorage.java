@@ -11,7 +11,7 @@ public class ClientDataStorage {
   private LoginInfo loginInfo = null;
   private ServiceHelper service = new ServiceHelper();
 
-  ListStore<MarkerModel> markersStore = null;   
+  ListStore<MarkerModel> markersStore = new ListStore<MarkerModel>();   
   MapWidget map = null;
   ContentPanel mapContentPanel = null;
 
