@@ -11,19 +11,7 @@ import com.google.gwt.maps.client.overlay.Marker;
 public class MarkerModel extends BaseModel {
   private MarkerStorage _markerStorage;
   private Marker _marker;
-  public Marker getMarker() {
-    return _marker;
-  }
-
   private ClientDataStorage _cds;
-
-  public MarkerStorage getMarkerStorage() {
-    if (_marker != null) {
-      _markerStorage.setLatitude(_marker.getLatLng().getLatitude());
-      _markerStorage.setLongitude(_marker.getLatLng().getLongitude());
-    }
-    return _markerStorage;
-  }
 
   public MarkerModel(final ClientDataStorage cds, MarkerStorage markerStorage, Marker marker) {
     _markerStorage = markerStorage;
@@ -51,8 +39,16 @@ public class MarkerModel extends BaseModel {
     }
   }
 
-  public MarkerModel(String name) {
-    setName(name);
+  public Marker getMarker() {
+    return _marker;
+  }
+
+  public MarkerStorage getMarkerStorage() {
+    if (_marker != null) {
+      _markerStorage.setLatitude(_marker.getLatLng().getLatitude());
+      _markerStorage.setLongitude(_marker.getLatLng().getLongitude());
+    }
+    return _markerStorage;
   }
 
   public String getName() {
