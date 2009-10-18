@@ -36,7 +36,7 @@ public class ToolbarMarkerHelper {
 
               final Marker marker = MapHelper.createMarker(addedMarker);
               sender.addOverlay(marker);
-              cds.getMarkersStore().add(new MarkerModel(addedMarker, marker));
+              cds.getMarkersStore().add(new MarkerModel(cds, addedMarker, marker));
             }
           });
         } else {

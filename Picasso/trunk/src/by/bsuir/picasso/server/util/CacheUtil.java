@@ -45,4 +45,11 @@ public class CacheUtil {
     }
     return mapId;
   }
+
+  public static void setOpenMapId(Long mapId) {
+    String mapKey = UserUtil.getCurrentUserEmail() + CACHE_KEY_DELIMETER + CURRENT_MAP_KEY;
+    Cache cache = getCache();
+    cache.put(mapKey, mapId);
+  }
+
 }

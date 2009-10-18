@@ -55,7 +55,7 @@ public class MarkersDataServiceImpl extends RemoteServiceServlet implements Mark
             if (CacheUtil.getOpenMapId() == managedMarker.getMapId()) {
               managedMarker.setLatitude(markerStorage.getLatitude());
               managedMarker.setLongitude(markerStorage.getLongitude());
-              managedMarker.setName(managedMarker.getName());
+              managedMarker.setName(markerStorage.getName());
             }
             tx.commit();
           } catch (Exception e) {

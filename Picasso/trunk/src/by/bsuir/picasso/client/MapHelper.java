@@ -39,8 +39,13 @@ public class MapHelper {
       map.setCenter(LatLng.newInstance(mapInfo.getLatitude(), mapInfo.getLongitude()));
       map.setZoomLevel(mapInfo.getZoomLevel());
 
-      // Load markers
+      // Cleanup markers on the Map
+      for (MarkerModel markerModel : cds.getMarkersStore().getModels()) {
+        map.removeOverlay(markerModel.getMarker());
+      }
       cds.getMarkersStore().removeAll();
+
+      // Load markers for current map
       MarkersDataServiceAsync markersDataService = cds.getService().getMarkersDataService();
       markersDataService.getMarkerStorageList(new AsyncCallback<MarkerStorage[]>() {
         public void onFailure(Throwable caught) {
@@ -50,9 +55,7 @@ public class MapHelper {
           ListStore<MarkerModel> ms = cds.getMarkersStore();
           for (int i = 0; i < result.length; i++) {
             MarkerStorage markerStorage = result[i];
-            Marker marker = MapHelper.createMarker(markerStorage);            
-            map.addOverlay(marker);
-            ms.add(new MarkerModel(markerStorage, marker));
+            ms.add(new MarkerModel(cds, markerStorage, null));
           }
         }
       });

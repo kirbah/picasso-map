@@ -291,6 +291,7 @@ public class MenuHelper {
         // Save markers
         MarkersDataServiceAsync markersDataService = cds.getService().getMarkersDataService();
         List<MarkerStorage> msl = new ArrayList<MarkerStorage>();
+        cds.getMarkersStore().commitChanges();
         for (MarkerModel markerModel : cds.getMarkersStore().getModels()) {
           MarkerStorage markerStorage = markerModel.getMarkerStorage();
           msl.add(markerStorage);
