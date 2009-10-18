@@ -5,6 +5,7 @@ import java.util.List;
 
 import by.bsuir.picasso.client.data.ClientDataStorage;
 import by.bsuir.picasso.client.data.MarkerModel;
+import by.bsuir.picasso.client.data.PolyModel;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -35,7 +36,6 @@ public class MarkersPanelHelper {
     item.addSelectionListener(new SelectionListener<ButtonEvent>() {
       public void componentSelected(ButtonEvent ce) {
         ToolbarMarkerHelper.addMarkerButton(cds);
-        //cds.getMarkersStore().add(new MarkerModel(8L, "name 8"));
       }
     });
     toolBar.add(item);
@@ -43,6 +43,11 @@ public class MarkersPanelHelper {
     Button itemPolyline = new Button();
     itemPolyline.setToolTip("New Polyline");
     itemPolyline.setIcon(Picasso.IMAGES.polilyneAdd());
+    itemPolyline.addSelectionListener(new SelectionListener<ButtonEvent>() {
+      public void componentSelected(ButtonEvent ce) {
+        ToolbarMarkerHelper.addPolylineButton(cds);
+      }
+    });
     toolBar.add(itemPolyline);
 
     toolBar.add(new SeparatorToolItem());
@@ -54,6 +59,7 @@ public class MarkersPanelHelper {
 
     west.setTopComponent(toolBar);
 
+    // Markers
     ContentPanel cp = new ContentPanel();
     cp.setHeading("Markers");
     cp.setLayout(new FitLayout());
@@ -81,10 +87,33 @@ public class MarkersPanelHelper {
 
     west.add(cp);
 
-    ContentPanel cp2 = new ContentPanel();
-    cp2.setHeading("Polylines");
-    cp2.setLayout(new FitLayout());
-    west.add(cp2);
+    // Polylines
+    ContentPanel contentPoly = new ContentPanel();
+    contentPoly.setHeading("Polylines");
+    contentPoly.setLayout(new FitLayout());
+
+    List<ColumnConfig> configsPoly = new ArrayList<ColumnConfig>();
+
+    ColumnConfig columnPoly = new ColumnConfig();
+    columnPoly.setId("name");
+    columnPoly.setHeader("Name");
+    columnPoly.setWidth(220);
+
+    TextField<String> textPoly = new TextField<String>();
+    text.setAllowBlank(false);
+    columnPoly.setEditor(new CellEditor(textPoly));
+    configsPoly.add(columnPoly);
+
+    ColumnModel cmPoly = new ColumnModel(configsPoly);
+
+    ListStore<PolyModel> polyStore = cds.getPolyStore();
+    final EditorGrid<PolyModel> gridPoly = new EditorGrid<PolyModel>(polyStore, cmPoly);
+    gridPoly.setAutoExpandColumn("name");
+    gridPoly.setBorders(true);
+    gridPoly.setClicksToEdit(ClicksToEdit.TWO);
+    contentPoly.add(gridPoly);
+    
+    west.add(contentPoly);
 
     return west;
   }

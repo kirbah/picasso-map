@@ -11,7 +11,8 @@ public class ClientDataStorage {
   private LoginInfo loginInfo = null;
   private ServiceHelper service = new ServiceHelper();
 
-  ListStore<MarkerModel> markersStore = new ListStore<MarkerModel>();   
+  ListStore<MarkerModel> markersStore = new ListStore<MarkerModel>();
+  ListStore<PolyModel> polyStore = new ListStore<PolyModel>();
   MapWidget map = null;
   ContentPanel mapContentPanel = null;
 
@@ -47,8 +48,8 @@ public class ClientDataStorage {
     return markersStore;
   }
 
-  public void setMarkersStore(ListStore<MarkerModel> markersStore) {
-    this.markersStore = markersStore;
+  public ListStore<PolyModel> getPolyStore() {
+    return polyStore;
   }
 
 }
