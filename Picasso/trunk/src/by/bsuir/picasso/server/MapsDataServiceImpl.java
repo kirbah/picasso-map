@@ -8,6 +8,7 @@ import javax.jdo.Query;
 import javax.jdo.Transaction;
 
 import by.bsuir.picasso.client.service.MapsDataService;
+import by.bsuir.picasso.server.util.CacheUtil;
 import by.bsuir.picasso.server.util.PMF;
 import by.bsuir.picasso.server.util.UserUtil;
 import by.bsuir.picasso.shared.MapInfo;
@@ -159,6 +160,8 @@ public class MapsDataServiceImpl extends RemoteServiceServlet implements MapsDat
     } finally {
       pm.close();
     }
+
+    CacheUtil.setOpenMapId(openMap.getMapId());
 
     return openMap;
   }
