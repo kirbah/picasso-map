@@ -41,11 +41,11 @@ public class MarkersPanelHelper {
     toolBar.add(item);
 
     Button itemPolyline = new Button();
-    itemPolyline.setToolTip("New Polyline");
+    itemPolyline.setToolTip("New Polygon");
     itemPolyline.setIcon(Picasso.IMAGES.polilyneAdd());
     itemPolyline.addSelectionListener(new SelectionListener<ButtonEvent>() {
       public void componentSelected(ButtonEvent ce) {
-        ToolbarMarkerHelper.addPolylineButton(cds);
+        ToolbarMarkerHelper.addPolygonButton(cds);
       }
     });
     toolBar.add(itemPolyline);
@@ -87,9 +87,9 @@ public class MarkersPanelHelper {
 
     west.add(cp);
 
-    // Polylines
+    // Polygons
     ContentPanel contentPoly = new ContentPanel();
-    contentPoly.setHeading("Polylines");
+    contentPoly.setHeading("Polygons");
     contentPoly.setLayout(new FitLayout());
 
     List<ColumnConfig> configsPoly = new ArrayList<ColumnConfig>();
@@ -106,7 +106,7 @@ public class MarkersPanelHelper {
 
     ColumnModel cmPoly = new ColumnModel(configsPoly);
 
-    ListStore<PolyModel> polyStore = cds.getPolyStore();
+    ListStore<PolyModel> polyStore = cds.getPolygonStore();
     final EditorGrid<PolyModel> gridPoly = new EditorGrid<PolyModel>(polyStore, cmPoly);
     gridPoly.setAutoExpandColumn("name");
     gridPoly.setBorders(true);

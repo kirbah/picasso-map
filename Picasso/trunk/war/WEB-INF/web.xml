@@ -33,8 +33,8 @@
     <servlet-class>by.bsuir.picasso.server.MarkersDataServiceImpl</servlet-class>
   </servlet>
   <servlet>
-    <servlet-name>polyServlet</servlet-name>
-    <servlet-class>by.bsuir.picasso.server.PolyServiceImpl</servlet-class>
+    <servlet-name>polyDataServlet</servlet-name>
+    <servlet-class>by.bsuir.picasso.server.PolyDataServiceImpl</servlet-class>
   </servlet>
 
   <servlet-mapping>
@@ -50,7 +50,7 @@
     <url-pattern>/picasso/markers</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>polyServlet</servlet-name>
+    <servlet-name>polyDataServlet</servlet-name>
     <url-pattern>/picasso/poly</url-pattern>
   </servlet-mapping>
 

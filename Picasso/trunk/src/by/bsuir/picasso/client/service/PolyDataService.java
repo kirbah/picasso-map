@@ -6,10 +6,10 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("poly")
-public interface PolyService extends RemoteService {
+public interface PolyDataService extends RemoteService {
   PolyStorage[] getPolyList();
 
-  Long save(PolyStorage polySrorage);
+  Long[] save(PolyStorage[] polySrorage);
 
   Boolean delete(Long id);
 }

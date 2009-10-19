@@ -51,17 +51,17 @@ public class ToolbarMarkerHelper {
     });
   }
 
-  public static void addPolylineButton(final ClientDataStorage cds) {
-    final MessageBox box = MessageBox.prompt("Name", "Please enter new polyline name:");
+  public static void addPolygonButton(final ClientDataStorage cds) {
+    final MessageBox box = MessageBox.prompt("Name", "Please enter new polygon name:");
     box.addCallback(new Listener<MessageBoxEvent>() {
       public void handleEvent(MessageBoxEvent be) {
         Button btn = be.getButtonClicked();
         if (Dialog.OK.equals(btn.getItemId())) {
+          final MapWidget map = cds.getMap();
           final PolyStorage addedPoly = new PolyStorage();
           String name = be.getValue();
           addedPoly.setName(name);
-
-          final MapWidget map = cds.getMap();
+          addedPoly.setZoomLevel(map.getZoomLevel());
 
           String color = "#FF0000";
           int weight = 1;
@@ -76,7 +76,7 @@ public class ToolbarMarkerHelper {
 
           poly.addPolygonEndLineHandler(new PolygonEndLineHandler() {
             public void onEnd(PolygonEndLineEvent event) {
-              cds.getPolyStore().add(new PolyModel(cds, poly, addedPoly));
+              cds.getPolygonStore().add(new PolyModel(cds, addedPoly, poly));
             }
           });
 

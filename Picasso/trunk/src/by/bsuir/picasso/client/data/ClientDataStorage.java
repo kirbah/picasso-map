@@ -12,7 +12,7 @@ public class ClientDataStorage {
   private ServiceHelper service = new ServiceHelper();
 
   ListStore<MarkerModel> markersStore = new ListStore<MarkerModel>();
-  ListStore<PolyModel> polyStore = new ListStore<PolyModel>();
+  ListStore<PolyModel> polygonStore = new ListStore<PolyModel>();
   MapWidget map = null;
   ContentPanel mapContentPanel = null;
 
@@ -48,8 +48,8 @@ public class ClientDataStorage {
     return markersStore;
   }
 
-  public ListStore<PolyModel> getPolyStore() {
-    return polyStore;
+  public ListStore<PolyModel> getPolygonStore() {
+    return polygonStore;
   }
 
 }
