@@ -1,7 +1,5 @@
 package by.bsuir.picasso.shared;
 
-import java.util.List;
-
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -22,14 +20,20 @@ public class PolyStorage implements IsSerializable {
   @Persistent
   private String name;
 
+  @Persistent
+  private String points;
+
+  @Persistent
+  private String levels;
+
+  @Persistent
+  private Integer zoomLevel;
+
   /**
    * @see by.bsuir.picasso.shared.MapTypes
    */
   @Persistent
   private String type;
-
-  @Persistent(mappedBy = "polyStorage")
-  private List<PolyVertex> vertex;
 
   public Long getId() {
     return id;
@@ -55,20 +59,44 @@ public class PolyStorage implements IsSerializable {
     this.name = name;
   }
 
+  /**
+   * @see by.bsuir.picasso.shared.MapTypes
+   */
   public String getType() {
     return type;
   }
 
+  /**
+   * @see by.bsuir.picasso.shared.MapTypes
+   */
   public void setType(String type) {
-    this.type = type;
+    if (type == MapTypes.POLYGON || type == MapTypes.POLYLINE) {
+      this.type = type;
+    }
   }
 
-  public List<PolyVertex> getVertex() {
-    return vertex;
+  public String getPoints() {
+    return points;
   }
 
-  public void setVertex(List<PolyVertex> vertex) {
-    this.vertex = vertex;
+  public void setPoints(String points) {
+    this.points = points;
+  }
+
+  public String getLevels() {
+    return levels;
+  }
+
+  public void setLevels(String levels) {
+    this.levels = levels;
+  }
+
+  public Integer getZoomLevel() {
+    return zoomLevel;
+  }
+
+  public void setZoomLevel(Integer zoomLevel) {
+    this.zoomLevel = zoomLevel;
   }
 
 }

@@ -6,10 +6,14 @@ import java.util.List;
 import by.bsuir.picasso.client.data.ClientDataStorage;
 import by.bsuir.picasso.client.data.MapModel;
 import by.bsuir.picasso.client.data.MarkerModel;
+import by.bsuir.picasso.client.data.PolyModel;
 import by.bsuir.picasso.client.service.MapsDataServiceAsync;
 import by.bsuir.picasso.client.service.MarkersDataServiceAsync;
+import by.bsuir.picasso.client.service.PolyDataServiceAsync;
 import by.bsuir.picasso.shared.MapInfo;
+import by.bsuir.picasso.shared.MapTypes;
 import by.bsuir.picasso.shared.MarkerStorage;
+import by.bsuir.picasso.shared.PolyStorage;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -309,6 +313,30 @@ public class MenuHelper {
             }
           }
         });
+
+        // Save Polygons
+        PolyDataServiceAsync polyDataService = cds.getService().getPolyDataService();
+        List<PolyStorage> polyList = new ArrayList<PolyStorage>();
+        cds.getPolygonStore().commitChanges();
+        for (PolyModel polyModel : cds.getPolygonStore().getModels()) {
+          PolyStorage polyStorage = polyModel.getPolyStorage();
+          polyStorage.setType(MapTypes.POLYGON);
+          polyList.add(polyStorage);
+        }
+        final PolyStorage[] polySave = polyList.toArray(new PolyStorage[0]);
+        polyDataService.save(polySave,  new AsyncCallback<Long[]>() {
+          public void onFailure(Throwable caught) {
+          }
+          public void onSuccess(Long[] result) {
+            if (result != null) {
+              for (int i = 0; i < polySave.length && i < result.length; i++) {
+                PolyStorage polyStorage = polySave[i];
+                polyStorage.setId(result[i]);
+              }
+            }
+          }
+        });
+      
       }
     });
   }

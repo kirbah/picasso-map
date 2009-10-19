@@ -2,16 +2,21 @@ package by.bsuir.picasso.client;
 
 import by.bsuir.picasso.client.data.ClientDataStorage;
 import by.bsuir.picasso.client.data.MarkerModel;
+import by.bsuir.picasso.client.data.PolyModel;
 import by.bsuir.picasso.client.service.MapsDataServiceAsync;
 import by.bsuir.picasso.client.service.MarkersDataServiceAsync;
+import by.bsuir.picasso.client.service.PolyDataServiceAsync;
 import by.bsuir.picasso.shared.MapInfo;
 import by.bsuir.picasso.shared.MarkerStorage;
+import by.bsuir.picasso.shared.PolyStorage;
 
 import com.extjs.gxt.ui.client.store.ListStore;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.geom.LatLng;
+import com.google.gwt.maps.client.overlay.EncodedPolyline;
 import com.google.gwt.maps.client.overlay.Marker;
 import com.google.gwt.maps.client.overlay.MarkerOptions;
+import com.google.gwt.maps.client.overlay.Polygon;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 
@@ -59,6 +64,32 @@ public class MapHelper {
           }
         }
       });
+
+      // Load polygons
+      PolyDataServiceAsync polyDataService = cds.getService().getPolyDataService();
+      polyDataService.getPolyList(new AsyncCallback<PolyStorage[]>() {
+        public void onFailure(Throwable caught) {
+        }
+
+        public void onSuccess(PolyStorage[] result) {
+          ListStore<PolyModel> polygonStore = cds.getPolygonStore();
+          for (int i = 0; i < result.length; i++) {
+            PolyStorage polyStorage = result[i];
+
+            String color = "#FF0000";
+            int weight = 1;
+            double opacity = 1.0;
+
+            EncodedPolyline[] polylines = new EncodedPolyline[1];
+            polylines[0] = EncodedPolyline.newInstance(polyStorage.getPoints(), polyStorage.getZoomLevel(), polyStorage.getLevels(), 2, color, weight, opacity);
+            Polygon poly = Polygon.fromEncoded(polylines);
+            map.addOverlay(poly);
+
+            polygonStore.add(new PolyModel(cds, polyStorage, poly));
+          }
+        }
+      });
+
     } else {
       MapWidget map = cds.getMap();
       map.setVisible(false);
