@@ -3,6 +3,7 @@ package by.bsuir.picasso.client;
 import by.bsuir.picasso.client.data.ClientDataStorage;
 import by.bsuir.picasso.client.data.MarkerModel;
 import by.bsuir.picasso.client.data.PolyModel;
+import by.bsuir.picasso.client.handler.PolygonEditHandler;
 import by.bsuir.picasso.shared.MarkerStorage;
 import by.bsuir.picasso.shared.PolyStorage;
 
@@ -20,7 +21,7 @@ import com.google.gwt.maps.client.overlay.PolyEditingOptions;
 import com.google.gwt.maps.client.overlay.PolyStyleOptions;
 import com.google.gwt.maps.client.overlay.Polygon;
 
-public class ToolbarMarkerHelper {
+public class ToolbarHelper {
   public static void addMarkerButton(final ClientDataStorage cds) {
     final MessageBox box = MessageBox.prompt("Name", "Please enter new marker name:");
     box.addCallback(new Listener<MessageBoxEvent>() {
@@ -68,7 +69,7 @@ public class ToolbarMarkerHelper {
           double opacity = 1.0;
 
           PolyStyleOptions style = PolyStyleOptions.newInstance(color, weight, opacity);
-          final Polygon poly = new Polygon(new LatLng[0], color, weight, opacity, color, .7);
+          final Polygon poly = new Polygon(new LatLng[0], color, weight, opacity, color, 0);
 
           map.addOverlay(poly);
           poly.setDrawingEnabled(PolyEditingOptions.newInstance(20));
@@ -76,7 +77,9 @@ public class ToolbarMarkerHelper {
 
           poly.addPolygonEndLineHandler(new PolygonEndLineHandler() {
             public void onEnd(PolygonEndLineEvent event) {
-              cds.getPolygonStore().add(new PolyModel(cds, addedPoly, poly));
+              PolyModel polyModel = new PolyModel(cds, addedPoly, poly);
+              poly.addPolygonClickHandler(new PolygonEditHandler(polyModel));
+              cds.getPolygonStore().add(polyModel);
             }
           });
 

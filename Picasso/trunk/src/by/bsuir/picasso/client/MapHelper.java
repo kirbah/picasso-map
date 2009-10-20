@@ -3,6 +3,7 @@ package by.bsuir.picasso.client;
 import by.bsuir.picasso.client.data.ClientDataStorage;
 import by.bsuir.picasso.client.data.MarkerModel;
 import by.bsuir.picasso.client.data.PolyModel;
+import by.bsuir.picasso.client.handler.PolygonEditHandler;
 import by.bsuir.picasso.client.service.MapsDataServiceAsync;
 import by.bsuir.picasso.client.service.MarkersDataServiceAsync;
 import by.bsuir.picasso.client.service.PolyDataServiceAsync;
@@ -16,6 +17,7 @@ import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.overlay.EncodedPolyline;
 import com.google.gwt.maps.client.overlay.Marker;
 import com.google.gwt.maps.client.overlay.MarkerOptions;
+import com.google.gwt.maps.client.overlay.PolyStyleOptions;
 import com.google.gwt.maps.client.overlay.Polygon;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
@@ -84,8 +86,15 @@ public class MapHelper {
             polylines[0] = EncodedPolyline.newInstance(polyStorage.getPoints(), polyStorage.getZoomLevel(), polyStorage.getLevels(), 2, color, weight, opacity);
             Polygon poly = Polygon.fromEncoded(polylines);
             map.addOverlay(poly);
+            PolyStyleOptions fillStyle = PolyStyleOptions.newInstance(color, weight, 0.7);
+            poly.setFillStyle(fillStyle);
+            PolyStyleOptions style = PolyStyleOptions.newInstance(color, weight, opacity);
+            poly.setStrokeStyle(style);
 
-            polygonStore.add(new PolyModel(cds, polyStorage, poly));
+            PolyModel polyModel = new PolyModel(cds, polyStorage, poly);
+            poly.addPolygonClickHandler(new PolygonEditHandler(polyModel));
+
+            polygonStore.add(polyModel);
           }
         }
       });
