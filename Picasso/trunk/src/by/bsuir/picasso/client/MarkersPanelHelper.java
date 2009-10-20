@@ -35,7 +35,7 @@ public class MarkersPanelHelper {
     item.setIcon(Picasso.IMAGES.markerAdd());
     item.addSelectionListener(new SelectionListener<ButtonEvent>() {
       public void componentSelected(ButtonEvent ce) {
-        ToolbarMarkerHelper.addMarkerButton(cds);
+        ToolbarHelper.addMarkerButton(cds);
       }
     });
     toolBar.add(item);
@@ -45,7 +45,7 @@ public class MarkersPanelHelper {
     itemPolyline.setIcon(Picasso.IMAGES.polilyneAdd());
     itemPolyline.addSelectionListener(new SelectionListener<ButtonEvent>() {
       public void componentSelected(ButtonEvent ce) {
-        ToolbarMarkerHelper.addPolygonButton(cds);
+        ToolbarHelper.addPolygonButton(cds);
       }
     });
     toolBar.add(itemPolyline);
