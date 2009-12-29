@@ -67,6 +67,12 @@ public class MapHelper {
         }
       });
 
+      // Cleanup polygons on the Map
+      for (PolyModel polyModel : cds.getPolygonStore().getModels()) {
+        map.removeOverlay(polyModel.getPolygon());
+      }
+      cds.getPolygonStore().removeAll();
+
       // Load polygons
       PolyDataServiceAsync polyDataService = cds.getService().getPolyDataService();
       polyDataService.getPolyList(new AsyncCallback<PolyStorage[]>() {
