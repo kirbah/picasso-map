@@ -1,17 +1,17 @@
 package by.bsuir.picasso.client.images;
 
-import com.google.gwt.user.client.ui.AbstractImagePrototype;
-import com.google.gwt.user.client.ui.ImageBundle;
+import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.ImageResource;
 
-public interface AppImages extends ImageBundle {
+public interface AppImages extends ClientBundle {
 
-  @Resource("marker_add.png")
-  AbstractImagePrototype markerAdd();
+  @Source("marker_add.png")
+  ImageResource markerAdd();
 
-  @Resource("polygone_add.gif")
-  AbstractImagePrototype polilyneAdd();
+  @Source("polygone_add.gif")
+  ImageResource polilyneAdd();
 
-  @Resource("delete.png")
-  AbstractImagePrototype delete();
+  @Source("delete.png")
+  ImageResource delete();
 
 }

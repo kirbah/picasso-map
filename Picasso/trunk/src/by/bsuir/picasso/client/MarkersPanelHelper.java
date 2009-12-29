@@ -22,6 +22,7 @@ import com.extjs.gxt.ui.client.widget.layout.AccordionLayout;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.SeparatorToolItem;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
+import com.google.gwt.user.client.ui.AbstractImagePrototype;
 
 public class MarkersPanelHelper {
   public static ContentPanel buildMarkersPanel(final ClientDataStorage cds) {
@@ -32,7 +33,7 @@ public class MarkersPanelHelper {
     ToolBar toolBar = new ToolBar();
     final Button item = new Button();
     item.setToolTip("New Marker");
-    item.setIcon(Picasso.IMAGES.markerAdd());
+    item.setIcon(AbstractImagePrototype.create(Picasso.IMAGES.markerAdd()));
     item.addSelectionListener(new SelectionListener<ButtonEvent>() {
       public void componentSelected(ButtonEvent ce) {
         ToolbarHelper.addMarkerButton(cds);
@@ -42,7 +43,7 @@ public class MarkersPanelHelper {
 
     Button itemPolyline = new Button();
     itemPolyline.setToolTip("New Polygon");
-    itemPolyline.setIcon(Picasso.IMAGES.polilyneAdd());
+    itemPolyline.setIcon(AbstractImagePrototype.create(Picasso.IMAGES.polilyneAdd()));
     itemPolyline.addSelectionListener(new SelectionListener<ButtonEvent>() {
       public void componentSelected(ButtonEvent ce) {
         ToolbarHelper.addPolygonButton(cds);
@@ -54,7 +55,7 @@ public class MarkersPanelHelper {
 
     Button itemDelete = new Button();
     itemDelete.setToolTip("Delete");
-    itemDelete.setIcon(Picasso.IMAGES.delete());
+    itemDelete.setIcon(AbstractImagePrototype.create(Picasso.IMAGES.delete()));
     toolBar.add(itemDelete);
 
     west.setTopComponent(toolBar);
