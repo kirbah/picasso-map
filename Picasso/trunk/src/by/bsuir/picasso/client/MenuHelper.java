@@ -313,6 +313,15 @@ public class MenuHelper {
             }
           }
         });
+        // Delete removed markers
+        Long[] markersIds = cds.getDeletedMarkersId().toArray(new Long[0]);
+        markersDataService.delete(markersIds,  new AsyncCallback<Boolean>() {
+          public void onFailure(Throwable caught) {
+          }
+          public void onSuccess(Boolean result) {
+            cds.getDeletedMarkersId().clear();
+          }
+        });
 
         // Save Polygons
         PolyDataServiceAsync polyDataService = cds.getService().getPolyDataService();
@@ -336,7 +345,16 @@ public class MenuHelper {
             }
           }
         });
-      
+        // Delete removed polygons
+        Long[] polyIds = cds.getDeletedPolyId().toArray(new Long[0]);
+        polyDataService.delete(polyIds,  new AsyncCallback<Boolean>() {
+          public void onFailure(Throwable caught) {
+          }
+          public void onSuccess(Boolean result) {
+            cds.getDeletedPolyId().clear();
+          }
+        });
+
       }
     });
   }

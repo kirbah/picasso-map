@@ -11,5 +11,5 @@ public interface MarkersDataServiceAsync {
 
 	void getMarkerStorage(Long id, AsyncCallback<MarkerStorage> callback);
 
-	void delete(Long id, AsyncCallback<Boolean> callback);
+	void delete(Long[] id, AsyncCallback<Boolean> callback);
 }

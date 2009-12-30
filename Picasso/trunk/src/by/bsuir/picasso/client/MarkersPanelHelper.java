@@ -6,6 +6,8 @@ import java.util.List;
 import by.bsuir.picasso.client.data.ClientDataStorage;
 import by.bsuir.picasso.client.data.MarkerModel;
 import by.bsuir.picasso.client.data.PolyModel;
+import by.bsuir.picasso.shared.MarkerStorage;
+import by.bsuir.picasso.shared.PolyStorage;
 
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -17,6 +19,7 @@ import com.extjs.gxt.ui.client.widget.grid.CellEditor;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.EditorGrid;
+import com.extjs.gxt.ui.client.widget.grid.GridSelectionModel;
 import com.extjs.gxt.ui.client.widget.grid.EditorGrid.ClicksToEdit;
 import com.extjs.gxt.ui.client.widget.layout.AccordionLayout;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
@@ -26,7 +29,7 @@ import com.google.gwt.user.client.ui.AbstractImagePrototype;
 
 public class MarkersPanelHelper {
   public static ContentPanel buildMarkersPanel(final ClientDataStorage cds) {
-    ContentPanel west = new ContentPanel();
+    final ContentPanel west = new ContentPanel();
     west.setHeading("Markers");
     west.setLayout(new AccordionLayout());
 
@@ -80,11 +83,14 @@ public class MarkersPanelHelper {
     ColumnModel cm = new ColumnModel(configs);
 
     ListStore<MarkerModel> markersStore = cds.getMarkersStore();
-    final EditorGrid<MarkerModel> grid = new EditorGrid<MarkerModel>(markersStore, cm);
-    grid.setAutoExpandColumn("name");
-    grid.setBorders(true);
-    grid.setClicksToEdit(ClicksToEdit.TWO);
-    cp.add(grid);
+    final EditorGrid<MarkerModel> gridMarkers = new EditorGrid<MarkerModel>(markersStore, cm);
+    gridMarkers.setAutoExpandColumn("name");
+    gridMarkers.setBorders(true);
+    gridMarkers.setClicksToEdit(ClicksToEdit.TWO);
+
+    final GridSelectionModel<MarkerModel> csm = new GridSelectionModel<MarkerModel>();
+    gridMarkers.setSelectionModel(csm);
+    cp.add(gridMarkers);
 
     west.add(cp);
 
@@ -112,8 +118,36 @@ public class MarkersPanelHelper {
     gridPoly.setAutoExpandColumn("name");
     gridPoly.setBorders(true);
     gridPoly.setClicksToEdit(ClicksToEdit.TWO);
+
+    final GridSelectionModel<PolyModel> csmPoly = new GridSelectionModel<PolyModel>();
+    gridPoly.setSelectionModel(csmPoly);
     contentPoly.add(gridPoly);
-    
+
+    // Delete icon support
+    itemDelete.addSelectionListener(new SelectionListener<ButtonEvent>() {
+      public void componentSelected(ButtonEvent ce) {
+        if (gridMarkers.isVisible()) {
+          // Delete Marker
+          List<MarkerModel> selected = gridMarkers.getSelectionModel().getSelectedItems();
+          for (MarkerModel mm : selected) {
+            MarkerStorage ms = mm.getMarkerStorage();
+            cds.addDeletedMarkers(ms);
+            cds.getMap().removeOverlay(mm.getMarker());
+            cds.getMarkersStore().remove(mm);
+          }
+        } else if (gridPoly.isVisible()) {
+          // Delete Polygon
+          List<PolyModel> selected = gridPoly.getSelectionModel().getSelectedItems();
+          for (PolyModel pm : selected) {
+            PolyStorage ps = pm.getPolyStorage();
+            cds.addDeletedPoly(ps);
+            cds.getMap().removeOverlay(pm.getPolygon());
+            cds.getPolygonStore().remove(pm);
+          }
+        }
+      }
+    });
+
     west.add(contentPoly);
 
     return west;
