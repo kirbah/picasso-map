@@ -73,16 +73,18 @@ public class MarkersDataServiceImpl extends RemoteServiceServlet implements Mark
     return result.toArray(new Long[0]);
   }
 
-  public Boolean delete(Long id) {
+  public Boolean delete(Long[] ids) {
     Boolean isDeleted = false;
     PersistenceManager pm = PMF.get().getPersistenceManager();
 
     try {
-      MarkerStorage managedMarker = pm.getObjectById(MarkerStorage.class, id);
-      if (CacheUtil.getOpenMapId() == managedMarker.getMapId()) {
-        pm.deletePersistent(managedMarker);
-        isDeleted = true;
+      for (Long id : ids) {
+        MarkerStorage managedMarker = pm.getObjectById(MarkerStorage.class, id);
+        if (CacheUtil.getOpenMapId() == managedMarker.getMapId()) {
+          pm.deletePersistent(managedMarker);
+        }
       }
+      isDeleted = true;
     } finally {
       pm.close();
     }

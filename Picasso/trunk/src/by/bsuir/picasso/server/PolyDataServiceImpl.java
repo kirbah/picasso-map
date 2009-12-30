@@ -17,16 +17,18 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 @SuppressWarnings("serial")
 public class PolyDataServiceImpl extends RemoteServiceServlet implements PolyDataService {
 
-  public Boolean delete(Long id) {
+  public Boolean delete(Long[] ids) {
     Boolean isDeleted = false;
     PersistenceManager pm = PMF.get().getPersistenceManager();
 
     try {
-      PolyStorage polyStorage = pm.getObjectById(PolyStorage.class, id);
-      if (CacheUtil.getOpenMapId() == polyStorage.getMapId()) {
-        pm.deletePersistent(polyStorage);
-        isDeleted = true;
+      for (Long id : ids) {
+        PolyStorage polyStorage = pm.getObjectById(PolyStorage.class, id);
+        if (CacheUtil.getOpenMapId() == polyStorage.getMapId()) {
+          pm.deletePersistent(polyStorage);
+        }
       }
+      isDeleted = true;
     } finally {
       pm.close();
     }

@@ -16,5 +16,5 @@ public interface MarkersDataService extends RemoteService {
 
 	MarkerStorage getMarkerStorage(Long id);
 
-	Boolean delete(Long id);
+	Boolean delete(Long[] id);
 }

@@ -11,5 +11,5 @@ public interface PolyDataService extends RemoteService {
 
   Long[] save(PolyStorage[] polySrorage);
 
-  Boolean delete(Long id);
+  Boolean delete(Long[] id);
 }

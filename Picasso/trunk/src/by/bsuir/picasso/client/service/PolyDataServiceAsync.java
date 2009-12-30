@@ -9,5 +9,5 @@ public interface PolyDataServiceAsync {
 
   void save(PolyStorage[] polyStorage, AsyncCallback<Long[]> callback);
 
-  void delete(Long id, AsyncCallback<Boolean> callback);
+  void delete(Long[] id, AsyncCallback<Boolean> callback);
 }
