@@ -42,13 +42,15 @@ import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class MenuHelper {
+  static Window createMapWindow = null;
+
   public static MenuBar buildMenuBar(final ClientDataStorage cds) {
     Menu menu = new Menu();
 
     MenuItem item1 = new MenuItem("New");
     menu.add(item1);
 
-    final Window createMapWindow = createMapWindow(cds);
+    createMapWindow = createMapWindow(cds);
     item1.addSelectionListener(new SelectionListener<MenuEvent>() {
       public void componentSelected(MenuEvent ce) {
         createMapWindow.show();
@@ -357,6 +359,10 @@ public class MenuHelper {
 
       }
     });
+  }
+
+  public static Window getCreateMapWindow() {
+    return createMapWindow;
   }
 
 }

@@ -108,6 +108,7 @@ public class MapHelper {
     } else {
       MapWidget map = cds.getMap();
       map.setVisible(false);
+      MenuHelper.getCreateMapWindow().show();
     }
   }
 
