@@ -21,22 +21,6 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 @SuppressWarnings("serial")
 public class MapsDataServiceImpl extends RemoteServiceServlet implements MapsDataService {
 
-  public Boolean delete(Long id) {
-    Boolean isDeleted = false;
-    PersistenceManager pm = PMF.get().getPersistenceManager();
-
-    try {
-      MapInfo mapInfo = pm.getObjectById(MapInfo.class, id);
-      if (UserUtil.getCurrentUserEmail().equals(mapInfo.getUserEmailAddress())) {
-        pm.deletePersistent(mapInfo);
-        isDeleted = true;
-      }
-    } finally {
-      pm.close();
-    }
-    return isDeleted;
-  }
-
   public Boolean delete(Long[] ids) {
     Boolean isDeleted = false;
     PersistenceManager pm = PMF.get().getPersistenceManager();
