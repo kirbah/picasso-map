@@ -13,6 +13,8 @@ import by.bsuir.picasso.server.util.PMF;
 import by.bsuir.picasso.server.util.UserUtil;
 import by.bsuir.picasso.shared.MapInfo;
 import by.bsuir.picasso.shared.MapTypes;
+import by.bsuir.picasso.shared.MarkerStorage;
+import by.bsuir.picasso.shared.PolyStorage;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -43,7 +45,22 @@ public class MapsDataServiceImpl extends RemoteServiceServlet implements MapsDat
       for (Long id : ids) {
         MapInfo mapInfo = pm.getObjectById(MapInfo.class, id);
         if (UserUtil.getCurrentUserEmail().equals(mapInfo.getUserEmailAddress())) {
+
+          // Delete Markers
+          Query query = pm.newQuery(MarkerStorage.class);
+          query.setFilter("mapId == deletedMapId");
+          query.declareParameters("Long deletedMapId");
+          query.deletePersistentAll(id);
+
+          // Delete Polygons
+          Query queryPoly = pm.newQuery(PolyStorage.class);
+          queryPoly.setFilter("mapId == deletedMapId");
+          queryPoly.declareParameters("Long deletedMapId");
+          queryPoly.deletePersistentAll(id);
+
+          // Delete Map
           pm.deletePersistent(mapInfo);
+
           isDeleted = true;
         }
       }
