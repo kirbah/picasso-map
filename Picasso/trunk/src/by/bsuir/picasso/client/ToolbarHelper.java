@@ -23,7 +23,7 @@ import com.google.gwt.maps.client.overlay.Polygon;
 
 public class ToolbarHelper {
   public static void addMarkerButton(final ClientDataStorage cds) {
-    final MessageBox box = MessageBox.prompt("Name", "Please enter new marker name:");
+    final MessageBox box = MessageBox.prompt(Picasso.CONSTANTS.name(), Picasso.CONSTANTS.enterMarkerName() + ":");
     box.addCallback(new Listener<MessageBoxEvent>() {
       public void handleEvent(MessageBoxEvent be) {
         Button btn = be.getButtonClicked();
@@ -53,7 +53,7 @@ public class ToolbarHelper {
   }
 
   public static void addPolygonButton(final ClientDataStorage cds) {
-    final MessageBox box = MessageBox.prompt("Name", "Please enter new polygon name:");
+    final MessageBox box = MessageBox.prompt(Picasso.CONSTANTS.name(), Picasso.CONSTANTS.enterPolygonName() + ":");
     box.addCallback(new Listener<MessageBoxEvent>() {
       public void handleEvent(MessageBoxEvent be) {
         Button btn = be.getButtonClicked();

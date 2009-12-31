@@ -47,7 +47,7 @@ public class MenuHelper {
   public static MenuBar buildMenuBar(final ClientDataStorage cds) {
     Menu menu = new Menu();
 
-    MenuItem item1 = new MenuItem("New");
+    MenuItem item1 = new MenuItem(Picasso.CONSTANTS.menuNew());
     menu.add(item1);
 
     createMapWindow = createMapWindow(cds);
@@ -57,7 +57,7 @@ public class MenuHelper {
       }
     });
 
-    MenuItem item2 = new MenuItem("Open");
+    MenuItem item2 = new MenuItem(Picasso.CONSTANTS.menuOpen());
     menu.add(item2);
 
     item2.addSelectionListener(new SelectionListener<MenuEvent>() {
@@ -66,7 +66,7 @@ public class MenuHelper {
       }
     });
 
-    MenuItem itemSave = new MenuItem("Save");
+    MenuItem itemSave = new MenuItem(Picasso.CONSTANTS.menuSave());
     menu.add(itemSave);
 
     itemSave.addSelectionListener(new SelectionListener<MenuEvent>() {
@@ -77,7 +77,7 @@ public class MenuHelper {
 
     menu.add(new SeparatorMenuItem());
 
-    MenuItem item3 = new MenuItem("Log out");
+    MenuItem item3 = new MenuItem(Picasso.CONSTANTS.menuLogout());
     menu.add(item3);
     item3.addSelectionListener(new SelectionListener<MenuEvent>() {
       public void componentSelected(MenuEvent ce) {
@@ -89,7 +89,7 @@ public class MenuHelper {
     MenuBar bar = new MenuBar();
     bar.setBorders(true);
     bar.setStyleAttribute("borderTop", "none");
-    bar.add(new MenuBarItem("File", menu));
+    bar.add(new MenuBarItem(Picasso.CONSTANTS.menuFile(), menu));
 
     Menu sub2 = new Menu();
     sub2.add(new MenuItem("Cut"));
@@ -163,7 +163,7 @@ public class MenuHelper {
 
     window.add(grid);
 
-    Button openBtn = new Button("Open");
+    Button openBtn = new Button(Picasso.CONSTANTS.buttonOpen());
     window.addButton(openBtn);
     openBtn.addSelectionListener(new SelectionListener<ButtonEvent>() {
       public void componentSelected(ButtonEvent ce) {
@@ -176,7 +176,7 @@ public class MenuHelper {
       }
     });
 
-    Button deleteBtn = new Button("Delete");
+    Button deleteBtn = new Button(Picasso.CONSTANTS.buttonDelete());
     window.addButton(deleteBtn);
     deleteBtn.addSelectionListener(new SelectionListener<ButtonEvent>() {
       public void componentSelected(ButtonEvent ce) {
@@ -201,7 +201,7 @@ public class MenuHelper {
       }
     });
 
-    Button closeBtn = new Button("Close");
+    Button closeBtn = new Button(Picasso.CONSTANTS.buttonClose());
     closeBtn.addSelectionListener(new SelectionListener<ButtonEvent>() {
       public void componentSelected(ButtonEvent ce) {
         window.hide();
@@ -228,14 +228,14 @@ public class MenuHelper {
     form.setWidth(150);
 
     final TextField<String> firstName = new TextField<String>();
-    firstName.setFieldLabel("Name");
+    firstName.setFieldLabel(Picasso.CONSTANTS.name());
     firstName.setAllowBlank(false);
     FormData formData = new FormData("-20");
     form.add(firstName, formData);
 
     window.add(form);
 
-    Button createBtn = new Button("Create");
+    Button createBtn = new Button(Picasso.CONSTANTS.buttonCreate());
     window.addButton(createBtn);
     createBtn.addSelectionListener(new SelectionListener<ButtonEvent>() {
       public void componentSelected(ButtonEvent ce) {
@@ -259,7 +259,7 @@ public class MenuHelper {
       }
     });
 
-    Button closeBtn = new Button("Close");
+    Button closeBtn = new Button(Picasso.CONSTANTS.buttonClose());
     closeBtn.addSelectionListener(new SelectionListener<ButtonEvent>() {
       public void componentSelected(ButtonEvent ce) {
         firstName.setValue("");

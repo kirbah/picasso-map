@@ -30,12 +30,12 @@ import com.google.gwt.user.client.ui.AbstractImagePrototype;
 public class MarkersPanelHelper {
   public static ContentPanel buildMarkersPanel(final ClientDataStorage cds) {
     final ContentPanel west = new ContentPanel();
-    west.setHeading("Markers");
+    west.setHeading(Picasso.CONSTANTS.markers());
     west.setLayout(new AccordionLayout());
 
     ToolBar toolBar = new ToolBar();
     final Button item = new Button();
-    item.setToolTip("New Marker");
+    item.setToolTip(Picasso.CONSTANTS.tooltipMarker());
     item.setIcon(AbstractImagePrototype.create(Picasso.IMAGES.markerAdd()));
     item.addSelectionListener(new SelectionListener<ButtonEvent>() {
       public void componentSelected(ButtonEvent ce) {
@@ -45,7 +45,7 @@ public class MarkersPanelHelper {
     toolBar.add(item);
 
     Button itemPolyline = new Button();
-    itemPolyline.setToolTip("New Polygon");
+    itemPolyline.setToolTip(Picasso.CONSTANTS.tooltipPolygon());
     itemPolyline.setIcon(AbstractImagePrototype.create(Picasso.IMAGES.polilyneAdd()));
     itemPolyline.addSelectionListener(new SelectionListener<ButtonEvent>() {
       public void componentSelected(ButtonEvent ce) {
@@ -57,7 +57,7 @@ public class MarkersPanelHelper {
     toolBar.add(new SeparatorToolItem());
 
     Button itemDelete = new Button();
-    itemDelete.setToolTip("Delete");
+    itemDelete.setToolTip(Picasso.CONSTANTS.delete());
     itemDelete.setIcon(AbstractImagePrototype.create(Picasso.IMAGES.delete()));
     toolBar.add(itemDelete);
 
@@ -65,14 +65,14 @@ public class MarkersPanelHelper {
 
     // Markers
     ContentPanel cp = new ContentPanel();
-    cp.setHeading("Markers");
+    cp.setHeading(Picasso.CONSTANTS.markers());
     cp.setLayout(new FitLayout());
 
     List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
     ColumnConfig column = new ColumnConfig();
     column.setId("name");
-    column.setHeader("Name");
+    column.setHeader(Picasso.CONSTANTS.columnName());
     column.setWidth(220);
 
     TextField<String> text = new TextField<String>();
@@ -96,14 +96,14 @@ public class MarkersPanelHelper {
 
     // Polygons
     ContentPanel contentPoly = new ContentPanel();
-    contentPoly.setHeading("Polygons");
+    contentPoly.setHeading(Picasso.CONSTANTS.polygons());
     contentPoly.setLayout(new FitLayout());
 
     List<ColumnConfig> configsPoly = new ArrayList<ColumnConfig>();
 
     ColumnConfig columnPoly = new ColumnConfig();
     columnPoly.setId("name");
-    columnPoly.setHeader("Name");
+    columnPoly.setHeader(Picasso.CONSTANTS.columnName());
     columnPoly.setWidth(220);
 
     TextField<String> textPoly = new TextField<String>();

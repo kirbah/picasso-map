@@ -1,6 +1,7 @@
 package by.bsuir.picasso.client;
 
 import by.bsuir.picasso.client.data.ClientDataStorage;
+import by.bsuir.picasso.client.i18n.AppConstants;
 import by.bsuir.picasso.client.images.AppImages;
 import by.bsuir.picasso.client.service.LoginServiceAsync;
 import by.bsuir.picasso.client.service.MapsDataServiceAsync;
@@ -33,6 +34,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 public class Picasso implements EntryPoint {
   private final ClientDataStorage cds = new ClientDataStorage();
   public static final AppImages IMAGES = GWT.create(AppImages.class);
+  public static final AppConstants CONSTANTS = GWT.create(AppConstants.class);
 
   public void onModuleLoad() {
     if (!Maps.isLoaded()) {
@@ -76,7 +78,7 @@ public class Picasso implements EntryPoint {
 
     ContentPanel center = buildMapPanel();
     ContentPanel south = new ContentPanel();
-    south.setHeading("Properties");
+    south.setHeading(Picasso.CONSTANTS.property());
 
     BorderLayoutData westData = new BorderLayoutData(LayoutRegion.WEST, 150);
     westData.setSplit(true);
@@ -119,7 +121,7 @@ public class Picasso implements EntryPoint {
 
   private ContentPanel buildMapPanel() {
     final ContentPanel center = new ContentPanel();
-    center.setHeading("Map");
+    center.setHeading(Picasso.CONSTANTS.map());
 
     final MapWidget map = new MapWidget(LatLng.newInstance(0, 0), 0);
 
