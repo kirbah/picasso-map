@@ -5,6 +5,7 @@
   <inherits name='com.google.gwt.user.User'/>
   <inherits name="com.google.gwt.maps.GoogleMaps" />
   <inherits name='com.extjs.gxt.ui.GXT'/>
+  <inherits name="com.google.gwt.i18n.I18N"/>
 
   <!-- Inherit the default GWT style sheet.  You can change       -->
   <!-- the theme of your GWT application by uncommenting          -->
@@ -21,6 +22,10 @@
 
   <!-- Specify the app entry point class.                         -->
   <entry-point class='by.bsuir.picasso.client.Picasso'/>
+
+  <extend-property name="locale" values="en"/>
+  <extend-property name="locale" values="ru"/>
+  <set-property-fallback name="locale" value="ru"/>
 
   <!--
     If you want to deploy this application outside of localhost,
