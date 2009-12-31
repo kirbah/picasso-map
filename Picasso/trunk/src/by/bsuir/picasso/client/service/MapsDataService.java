@@ -11,8 +11,6 @@ public interface MapsDataService extends RemoteService {
 
   Long save(MapInfo mapInfo);
 
-  Boolean delete(Long id);
-
   Boolean delete(Long[] ids);
 
   MapInfo findOpenMap();
