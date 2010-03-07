@@ -37,6 +37,11 @@
     <servlet-class>by.bsuir.picasso.server.PolyDataServiceImpl</servlet-class>
   </servlet>
 
+  <servlet>
+    <servlet-name>dataExportServlet</servlet-name>
+    <servlet-class>by.bsuir.picasso.servlet.DataExportServlet</servlet-class>
+  </servlet>
+
   <servlet-mapping>
     <servlet-name>loginService</servlet-name>
     <url-pattern>/picasso/login</url-pattern>
@@ -52,6 +57,11 @@
   <servlet-mapping>
     <servlet-name>polyDataServlet</servlet-name>
     <url-pattern>/picasso/poly</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>dataExportServlet</servlet-name>
+    <url-pattern>/picasso/dataExport.do</url-pattern>
   </servlet-mapping>
 
 </web-app>

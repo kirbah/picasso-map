@@ -44,4 +44,9 @@ public interface AppConstants extends Constants {
 
   String enterPolygonName();
 
+  String menuExport();
+
+  String menuCVS();
+
+  String menuXML();
 }
