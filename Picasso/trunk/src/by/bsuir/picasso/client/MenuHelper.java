@@ -37,6 +37,7 @@ import com.extjs.gxt.ui.client.widget.menu.MenuBar;
 import com.extjs.gxt.ui.client.widget.menu.MenuBarItem;
 import com.extjs.gxt.ui.client.widget.menu.MenuItem;
 import com.extjs.gxt.ui.client.widget.menu.SeparatorMenuItem;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -92,10 +93,28 @@ public class MenuHelper {
     bar.add(new MenuBarItem(Picasso.CONSTANTS.menuFile(), menu));
 
     Menu sub2 = new Menu();
-    sub2.add(new MenuItem("Cut"));
-    sub2.add(new MenuItem("Copy"));
 
-    MenuBarItem edit = new MenuBarItem("Edit", sub2);
+    MenuItem exportCVS = new MenuItem(Picasso.CONSTANTS.menuCVS());
+    sub2.add(exportCVS);
+    exportCVS.addSelectionListener(new SelectionListener<MenuEvent>() {
+      public void componentSelected(MenuEvent ce) {
+        String baseURL = GWT.getModuleBaseURL();
+        String url = baseURL + "dataExport.do?format=cvs";
+        com.google.gwt.user.client.Window.open(url, "", "menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=no,toolbar=true,width=100,height=100");
+      }
+    });
+
+    MenuItem exportXML = new MenuItem(Picasso.CONSTANTS.menuXML());
+    exportXML.addSelectionListener(new SelectionListener<MenuEvent>() {
+      public void componentSelected(MenuEvent ce) {
+        String baseURL = GWT.getModuleBaseURL();
+        String url = baseURL + "dataExport.do?format=xml";
+        com.google.gwt.user.client.Window.open(url, "", "menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=no,toolbar=true,width=100,height=100");
+      }
+    });
+    sub2.add(exportXML);
+
+    MenuBarItem edit = new MenuBarItem(Picasso.CONSTANTS.menuExport(), sub2);
     bar.add(edit);
     return bar;
   }
