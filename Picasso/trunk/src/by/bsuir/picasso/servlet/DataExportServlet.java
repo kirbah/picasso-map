@@ -2,6 +2,7 @@ package by.bsuir.picasso.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import by.bsuir.picasso.server.MapsDataServiceImpl;
 import by.bsuir.picasso.server.MarkersDataServiceImpl;
 import by.bsuir.picasso.server.PolyDataServiceImpl;
+import by.bsuir.picasso.server.util.PolylineDecoder;
+import by.bsuir.picasso.server.util.Vertex;
 import by.bsuir.picasso.shared.MapInfo;
 import by.bsuir.picasso.shared.MarkerStorage;
 import by.bsuir.picasso.shared.PolyStorage;
@@ -67,6 +70,38 @@ public class DataExportServlet extends HttpServlet {
     }
     pw.println(" </Markers>");
 
+    pw.println(" <Polys>");
+    PolyDataServiceImpl pservice = new PolyDataServiceImpl();
+    for (PolyStorage ps : pservice.getPolyList()) {
+      StringBuilder sbp = new StringBuilder();
+      sbp.append("  <Poly type=\"");
+      sbp.append(ps.getType());
+      sbp.append("\" name=\"");
+      sbp.append(ps.getName());
+      sbp.append("\" zoom=\"");
+      sbp.append(ps.getZoomLevel());
+      sbp.append("\" >");
+      pw.println(sbp.toString());
+      sbp = new StringBuilder();
+
+      List<Vertex> points = PolylineDecoder.decode(ps.getPoints());
+      int pointNumber = 0;
+      for (Vertex vertex : points) {
+        sbp.append("   <Point id=\"");
+        sbp.append(++pointNumber);
+        sbp.append("\" latitude=\"");
+        sbp.append(vertex.getLatitude());
+        sbp.append("\" longitude=\"");
+        sbp.append(vertex.getLongitude());
+        sbp.append("\" />");
+        pw.println(sbp.toString());
+        sbp = new StringBuilder();
+      }
+      sbp.append("  </Poly>");
+      pw.println(sbp.toString());
+    }
+    pw.println(" </Polys>");
+
     pw.println("</Map>");
   }
 
@@ -108,7 +143,13 @@ public class DataExportServlet extends HttpServlet {
       sbp.append(ps.getName());
       sbp.append(";");
       sbp.append(ps.getZoomLevel());
-      sbp.append(";");
+      List<Vertex> points = PolylineDecoder.decode(ps.getPoints());
+      for (Vertex vertex : points) {
+        sbp.append(";");
+        sbp.append(vertex.getLatitude());
+        sbp.append(";");
+        sbp.append(vertex.getLongitude());
+      }
       pw.println(sbp.toString());
     }
   }
