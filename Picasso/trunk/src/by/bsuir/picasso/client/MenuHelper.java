@@ -99,7 +99,7 @@ public class MenuHelper {
     exportCVS.addSelectionListener(new SelectionListener<MenuEvent>() {
       public void componentSelected(MenuEvent ce) {
         String baseURL = GWT.getModuleBaseURL();
-        String url = baseURL + "dataExport.do?format=cvs";
+        String url = baseURL + "dataExport.do?format=csv";
         com.google.gwt.user.client.Window.open(url, "", "menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=no,toolbar=true,width=100,height=100");
       }
     });
