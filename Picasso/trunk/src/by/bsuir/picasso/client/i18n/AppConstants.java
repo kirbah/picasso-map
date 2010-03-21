@@ -49,4 +49,14 @@ public interface AppConstants extends Constants {
   String menuCVS();
 
   String menuXML();
+
+  String menuElevation();
+
+  String openMap();
+
+  String mapName();
+
+  String lastUpdate();
+
+  String elevationExport();
 }
