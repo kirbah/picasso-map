@@ -114,6 +114,14 @@ public class MenuHelper {
     });
     sub2.add(exportXML);
 
+    MenuItem exportElevation = new MenuItem(Picasso.CONSTANTS.menuElevation());
+    exportElevation.addSelectionListener(new SelectionListener<MenuEvent>() {
+      public void componentSelected(MenuEvent ce) {
+        ElevationExport.showElevationWindow(cds);
+      }
+    });
+    sub2.add(exportElevation);
+
     MenuBarItem edit = new MenuBarItem(Picasso.CONSTANTS.menuExport(), sub2);
     bar.add(edit);
     return bar;
@@ -137,7 +145,7 @@ public class MenuHelper {
     window.setPlain(true);
     window.setModal(true);
     window.setBlinkModal(true);
-    window.setHeading("Open Map");
+    window.setHeading(Picasso.CONSTANTS.openMap());
     window.setLayout(new FitLayout());
 
     List<MapModel> mapModel = new ArrayList<MapModel>();
@@ -150,10 +158,10 @@ public class MenuHelper {
     final CheckBoxSelectionModel<MapModel> sm = new CheckBoxSelectionModel<MapModel>();
     configs.add(sm.getColumn());
 
-    ColumnConfig column = new ColumnConfig("name", "Map Name", 200);
+    ColumnConfig column = new ColumnConfig("name", Picasso.CONSTANTS.mapName(), 200);
     configs.add(column);
 
-    column = new ColumnConfig("updateDate", "Last Updated", 100);
+    column = new ColumnConfig("updateDate", Picasso.CONSTANTS.lastUpdate(), 100);
     column.setAlignment(HorizontalAlignment.RIGHT);
     column.setDateTimeFormat(DateTimeFormat.getShortDateTimeFormat());
     configs.add(column);
@@ -261,8 +269,9 @@ public class MenuHelper {
         MapsDataServiceAsync mapsDataService = cds.getService().getMapsDataService();
         final MapInfo mapInfo = new MapInfo();
         mapInfo.setName(firstName.getValue());
-        mapInfo.setLatitude(37);
-        mapInfo.setLongitude(-122);
+        // Default map position set to Minsk
+        mapInfo.setLatitude(53.9);
+        mapInfo.setLongitude(27.55);
         mapInfo.setZoomLevel(10);
         mapsDataService.save(mapInfo, new AsyncCallback<Long>() {
           public void onFailure(Throwable caught) {
