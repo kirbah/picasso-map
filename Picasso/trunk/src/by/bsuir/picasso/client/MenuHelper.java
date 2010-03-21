@@ -117,7 +117,7 @@ public class MenuHelper {
     MenuItem exportElevation = new MenuItem(Picasso.CONSTANTS.menuElevation());
     exportElevation.addSelectionListener(new SelectionListener<MenuEvent>() {
       public void componentSelected(MenuEvent ce) {
-        ElevationExport.showElevationWindow(cds);
+        ElevationExportWindow.showElevationWindow(cds);
       }
     });
     sub2.add(exportElevation);
