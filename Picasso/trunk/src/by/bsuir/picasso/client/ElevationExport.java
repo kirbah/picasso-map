@@ -64,13 +64,13 @@ public class ElevationExport {
     }
   }
 
-  private static double round(double in) {
+  public static double round(double in) {
     int rounded = (int) (in * 10000.0);
     return ((double) rounded) / 10000.0;
   }
 
   private static void fetchData() {
-    String url = WS_URL + "astergdem?lats"; // =53.93,53.93,53.92&lngs=27.69,27.70,27.70
+    String url = WS_URL + "astergdem?lats";
     boolean isFirst = true;
     for (Double lat : _pointsLat) {
       if (isFirst) {
