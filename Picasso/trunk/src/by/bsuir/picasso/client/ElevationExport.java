@@ -15,7 +15,7 @@ public class ElevationExport {
   private static final int POINTS_PER_REQUEST = 3;
   private static final String WS_URL = "http://ws.geonames.org/";
 
-  private static TextArea theDesription;
+  private static TextArea theData;
   private static double theLat = 0.0;
   private static double theLng = 0.0;
   private static double theLngStart = 0.0;
@@ -26,9 +26,9 @@ public class ElevationExport {
   private static List<Double> _pointsLat;
   private static List<Double> _pointsLng;
 
-  public static void begin(TextArea description, double latStart, double lngStart, double latEnd, double lngEnd,
+  public static void begin(TextArea dataArea, double latStart, double lngStart, double latEnd, double lngEnd,
       double latStep, double lngStep) {
-    theDesription = description;
+    theData = dataArea;
     theLat = latStart;
     theLng = lngStart;
     theLngStart = lngStart;
@@ -107,14 +107,14 @@ public class ElevationExport {
             String result = response.getText();
             // com.google.gwt.user.client.Window.alert(result);
             String[] resMeters = result.split("\r\n");
-            String old = theDesription.getRawValue();
+            String old = theData.getRawValue();
             String nvalue = "";
             int i = 0;
             for (String pointMeters : resMeters) {
               nvalue += _pointsLat.get(i) + ";" + _pointsLng.get(i) + ";" + pointMeters + "\r\n";
               i++;
             }
-            theDesription.setRawValue(old + nvalue);
+            theData.setRawValue(old + nvalue);
 
             nextStep();
           } else {

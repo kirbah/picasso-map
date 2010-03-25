@@ -59,4 +59,21 @@ public interface AppConstants extends Constants {
   String lastUpdate();
 
   String elevationExport();
+
+  String exportLatitude();
+
+  String exportLongitude();
+
+  String exportMax();
+
+  String exportMin();
+
+  String exportPieces();
+
+  String exportDelta();
+
+  String exportData();
+
+  String exportSubmit();
+
 }
