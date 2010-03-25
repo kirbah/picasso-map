@@ -58,28 +58,28 @@ public class ElevationExportWindow {
 
     // Latitude
     FieldSet left = new FieldSet();
-    left.setHeading("Latitude");
+    left.setHeading(Picasso.CONSTANTS.exportLatitude());
     left.setStyleAttribute("padding", "5px");
     FormLayout layout = new FormLayout();
-    layout.setLabelWidth(75);
+    layout.setLabelWidth(85);
     left.setLayout(layout);
 
     final NumberField latMaxField = new NumberField();
-    latMaxField.setFieldLabel("Max");
+    latMaxField.setFieldLabel(Picasso.CONSTANTS.exportMax());
     left.add(latMaxField, formData);
 
     final NumberField latMinField = new NumberField();
-    latMinField.setFieldLabel("Min");
+    latMinField.setFieldLabel(Picasso.CONSTANTS.exportMin());
     left.add(latMinField, formData);
 
     final NumberField latSteps = new NumberField();
-    latSteps.setFieldLabel("Pieces");
+    latSteps.setFieldLabel(Picasso.CONSTANTS.exportPieces());
     latSteps.setPropertyEditorType(Integer.class);
     latSteps.setValue(20);
     left.add(latSteps, formData);
 
     final LabelField latDelta = new LabelField();
-    latDelta.setFieldLabel("Delta");
+    latDelta.setFieldLabel(Picasso.CONSTANTS.exportDelta());
     left.add(latDelta, formData);
 
     Listener<FieldEvent> latitudeCalcListener = new Listener<FieldEvent>() {
@@ -93,27 +93,27 @@ public class ElevationExportWindow {
 
     // Longitude
     FieldSet right = new FieldSet();
-    right.setHeading("Longitude");
+    right.setHeading(Picasso.CONSTANTS.exportLongitude());
     right.setStyleAttribute("padding", "5px");
     layout = new FormLayout();
-    layout.setLabelWidth(75);
+    layout.setLabelWidth(85);
     right.setLayout(layout);
 
     final NumberField lngMaxField = new NumberField();
-    lngMaxField.setFieldLabel("Max");
+    lngMaxField.setFieldLabel(Picasso.CONSTANTS.exportMax());
     right.add(lngMaxField, formData);
 
     final NumberField lngMinField = new NumberField();
-    lngMinField.setFieldLabel("Min");
+    lngMinField.setFieldLabel(Picasso.CONSTANTS.exportMin());
     right.add(lngMinField, formData);
 
     final NumberField lngSteps = new NumberField();
-    lngSteps.setFieldLabel("Pieces");
+    lngSteps.setFieldLabel(Picasso.CONSTANTS.exportPieces());
     lngSteps.setValue(20);
     right.add(lngSteps, formData);
 
     final LabelField lngDelta = new LabelField();
-    lngDelta.setFieldLabel("Delta");
+    lngDelta.setFieldLabel(Picasso.CONSTANTS.exportDelta());
     right.add(lngDelta, formData);
 
     Listener<FieldEvent> longitudeCalcListener = new Listener<FieldEvent>() {
@@ -129,25 +129,30 @@ public class ElevationExportWindow {
     main.add(right, new ColumnData(.5));
     panel.add(main, new FormData("100%"));
 
-    final TextArea description = new TextArea();
-    description.setFieldLabel("Description");
-    panel.add(description, formData);
+    final TextArea dataArea = new TextArea();
+    dataArea.setFieldLabel(Picasso.CONSTANTS.exportData());
+    panel.add(dataArea, formData);
 
-    Button submit = new Button("Submit");
-
+    Button submit = new Button(Picasso.CONSTANTS.exportSubmit());
     submit.addSelectionListener(new SelectionListener<ButtonEvent>() {
       public void componentSelected(ButtonEvent ce) {
-        description.setRawValue("LAT;LNG;METERS\r\n");
+        dataArea.setRawValue("LAT;LNG;METERS\r\n");
         double latMin = latMinField.getValue().doubleValue();
         double latMax = latMaxField.getValue().doubleValue();
         double lngMin = lngMinField.getValue().doubleValue();
         double lngMax = lngMaxField.getValue().doubleValue();
-        ElevationExport.begin(description, latMin, lngMin, latMax, lngMax, _latStep, _lngStep);
+        ElevationExport.begin(dataArea, latMin, lngMin, latMax, lngMax, _latStep, _lngStep);
       }
     });
-
     panel.addButton(submit);
-    panel.addButton(new Button("Cancel"));
+
+    Button closeBtn = new Button(Picasso.CONSTANTS.buttonClose());
+    closeBtn.addSelectionListener(new SelectionListener<ButtonEvent>() {
+      public void componentSelected(ButtonEvent ce) {
+        window.hide();
+      }
+    });
+    panel.addButton(closeBtn);
 
     FormButtonBinding binding = new FormButtonBinding(panel);
     binding.addButton(submit);
