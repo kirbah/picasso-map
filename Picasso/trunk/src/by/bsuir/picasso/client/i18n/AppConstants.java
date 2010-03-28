@@ -76,4 +76,17 @@ public interface AppConstants extends Constants {
 
   String exportSubmit();
 
+  String exportService();
+
+  String exportAster();
+
+  String exportSRTM();
+
+  String progressWait();
+
+  String progressMessage();
+
+  String progressInit();
+
+  String progressComplete();
 }

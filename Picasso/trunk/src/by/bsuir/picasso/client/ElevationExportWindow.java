@@ -11,6 +11,7 @@ import com.extjs.gxt.ui.client.event.FieldEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
+import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.extjs.gxt.ui.client.widget.Window;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.FieldSet;
@@ -18,7 +19,9 @@ import com.extjs.gxt.ui.client.widget.form.FormButtonBinding;
 import com.extjs.gxt.ui.client.widget.form.FormPanel;
 import com.extjs.gxt.ui.client.widget.form.LabelField;
 import com.extjs.gxt.ui.client.widget.form.NumberField;
+import com.extjs.gxt.ui.client.widget.form.SimpleComboBox;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
+import com.extjs.gxt.ui.client.widget.form.ComboBox.TriggerAction;
 import com.extjs.gxt.ui.client.widget.layout.ColumnData;
 import com.extjs.gxt.ui.client.widget.layout.ColumnLayout;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
@@ -129,6 +132,17 @@ public class ElevationExportWindow {
     main.add(right, new ColumnData(.5));
     panel.add(main, new FormData("100%"));
 
+    // SRTM/Aster selection
+    final SimpleComboBox<String> serviceCombo = new SimpleComboBox<String>();
+    serviceCombo.add(Picasso.CONSTANTS.exportAster());
+    serviceCombo.add(Picasso.CONSTANTS.exportSRTM());
+    serviceCombo.setSimpleValue(Picasso.CONSTANTS.exportAster());
+    serviceCombo.setTriggerAction(TriggerAction.ALL);
+    serviceCombo.setFieldLabel(Picasso.CONSTANTS.exportService());
+    serviceCombo.setEditable(false);
+    panel.add(serviceCombo, formData);
+
+    // Export results area
     final TextArea dataArea = new TextArea();
     dataArea.setFieldLabel(Picasso.CONSTANTS.exportData());
     panel.add(dataArea, formData);
@@ -136,12 +150,19 @@ public class ElevationExportWindow {
     Button submit = new Button(Picasso.CONSTANTS.exportSubmit());
     submit.addSelectionListener(new SelectionListener<ButtonEvent>() {
       public void componentSelected(ButtonEvent ce) {
+        final MessageBox box = MessageBox.progress(Picasso.CONSTANTS.progressWait(), Picasso.CONSTANTS
+            .progressMessage(), Picasso.CONSTANTS.progressInit());
+
         dataArea.setRawValue("LAT;LNG;METERS\r\n");
+        String service = "astergdem";
+        if (Picasso.CONSTANTS.exportSRTM().equals(serviceCombo.getSimpleValue())) {
+          service = "srtm3";
+        }
         double latMin = latMinField.getValue().doubleValue();
         double latMax = latMaxField.getValue().doubleValue();
         double lngMin = lngMinField.getValue().doubleValue();
         double lngMax = lngMaxField.getValue().doubleValue();
-        ElevationExport.begin(dataArea, latMin, lngMin, latMax, lngMax, _latStep, _lngStep);
+        ElevationExport.begin(box, dataArea, service, latMin, lngMin, latMax, lngMax, _latStep, _lngStep);
       }
     });
     panel.addButton(submit);
