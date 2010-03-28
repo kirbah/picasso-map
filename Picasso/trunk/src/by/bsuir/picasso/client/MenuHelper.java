@@ -40,6 +40,7 @@ import com.extjs.gxt.ui.client.widget.menu.SeparatorMenuItem;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.maps.client.MapWidget;
+import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class MenuHelper {
@@ -121,6 +122,19 @@ public class MenuHelper {
       }
     });
     sub2.add(exportElevation);
+
+    MenuItem exportMapImage = new MenuItem(Picasso.CONSTANTS.menuMapImage());
+    exportMapImage.addSelectionListener(new SelectionListener<MenuEvent>() {
+      public void componentSelected(MenuEvent ce) {
+        LatLng center = cds.getMap().getCenter();
+        double lat = ElevationExport.round(center.getLatitude());
+        double lng = ElevationExport.round(center.getLongitude());
+        String url = "http://maps.google.com/staticmap?center=" + lat + "," + lng
+            + "&zoom=" + cds.getMap().getZoomLevel() + "&size=800x800&maptype=hybrid&key=" + Picasso.MAP_KEY;
+        com.google.gwt.user.client.Window.open(url, "", "menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=no,toolbar=true");
+      }
+    });
+    sub2.add(exportMapImage);
 
     MenuBarItem edit = new MenuBarItem(Picasso.CONSTANTS.menuExport(), sub2);
     bar.add(edit);

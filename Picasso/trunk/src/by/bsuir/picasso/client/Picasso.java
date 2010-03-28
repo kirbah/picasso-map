@@ -32,9 +32,11 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class Picasso implements EntryPoint {
-  private final ClientDataStorage cds = new ClientDataStorage();
+  public static final String MAP_KEY = "ABQIAAAAb2yx7NRiag8Ko-bH6ewDPhTUj3LLQjpve3K0r5QTdcaDizwGKBTyqOKPtjItVFL79DGvp67YY_zPpg";
   public static final AppImages IMAGES = GWT.create(AppImages.class);
   public static final AppConstants CONSTANTS = GWT.create(AppConstants.class);
+
+  private final ClientDataStorage cds = new ClientDataStorage();
 
   public void onModuleLoad() {
     if (!Maps.isLoaded()) {
