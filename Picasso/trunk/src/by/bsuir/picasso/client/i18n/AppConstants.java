@@ -52,6 +52,8 @@ public interface AppConstants extends Constants {
 
   String menuElevation();
 
+  String menuMapImage();
+
   String openMap();
 
   String mapName();
