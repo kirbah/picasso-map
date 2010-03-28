@@ -3,6 +3,7 @@ package by.bsuir.picasso.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.extjs.gxt.ui.client.widget.MessageBox;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
@@ -12,10 +13,12 @@ import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 
 public class ElevationExport {
-  private static final int POINTS_PER_REQUEST = 3;
+  private static final int POINTS_PER_REQUEST = 20;
   private static final String WS_URL = "http://ws.geonames.org/";
 
+  private static MessageBox theBox;
   private static TextArea theData;
+  private static String theService;
   private static double theLat = 0.0;
   private static double theLng = 0.0;
   private static double theLngStart = 0.0;
@@ -23,12 +26,16 @@ public class ElevationExport {
   private static double theLngEnd = 0.0;
   private static double theLatStep = 0.0;
   private static double theLngStep = 0.0;
-  private static List<Double> _pointsLat;
-  private static List<Double> _pointsLng;
+  private static List<Double> thePointsLat;
+  private static List<Double> thePointsLng;
+  private static int thePointsToLoad;
+  private static int theCurrentPoint;
 
-  public static void begin(TextArea dataArea, double latStart, double lngStart, double latEnd, double lngEnd,
+  public static void begin(MessageBox box, TextArea dataArea, String service, double latStart, double lngStart, double latEnd, double lngEnd,
       double latStep, double lngStep) {
+    theBox = box;
     theData = dataArea;
+    theService = service;
     theLat = latStart;
     theLng = lngStart;
     theLngStart = lngStart;
@@ -37,17 +44,23 @@ public class ElevationExport {
     theLatStep = latStep;
     theLngStep = lngStep;
 
+    thePointsToLoad = ((int)((theLatEnd - theLat) / theLatStep) + 1) * ((int)((theLngEnd - theLng) / theLngStep) + 1);
+    theCurrentPoint = 0;
+
     nextStep();
   }
 
   private static void nextStep() {
-    _pointsLat = new ArrayList<Double>();
-    _pointsLng = new ArrayList<Double>();
+    double progress = ((double)theCurrentPoint) / ((double)thePointsToLoad);
+    theBox.getProgressBar().updateProgress(progress, (int) (progress * 100) + Picasso.CONSTANTS.progressComplete());
+
+    thePointsLat = new ArrayList<Double>();
+    thePointsLng = new ArrayList<Double>();
     int i = 0;
     for (; theLat <= theLatEnd; theLat = round(theLat + theLatStep)) {
       for (; theLng <= theLngEnd; theLng = round(theLng + theLngStep)) {
-        _pointsLat.add(theLat);
-        _pointsLng.add(theLng);
+        thePointsLat.add(theLat);
+        thePointsLng.add(theLng);
         i++;
         if (i == POINTS_PER_REQUEST) {
           theLng = round(theLng + theLngStep);
@@ -59,8 +72,12 @@ public class ElevationExport {
       }
       theLng = theLngStart;
     }
-    if (_pointsLat.size() > 0) {
+    if (thePointsLat.size() > 0) {
+      theCurrentPoint += thePointsLat.size();
       fetchData();
+    } else {
+      theBox.getProgressBar().updateProgress(1, 100 + Picasso.CONSTANTS.progressComplete());
+      theBox.close();
     }
   }
 
@@ -70,9 +87,9 @@ public class ElevationExport {
   }
 
   private static void fetchData() {
-    String url = WS_URL + "astergdem?lats";
+    String url = WS_URL + theService + "?lats";
     boolean isFirst = true;
-    for (Double lat : _pointsLat) {
+    for (Double lat : thePointsLat) {
       if (isFirst) {
         url += "=";
         isFirst = false;
@@ -83,7 +100,7 @@ public class ElevationExport {
     }
     url += "&lngs";
     isFirst = true;
-    for (Double lng : _pointsLng) {
+    for (Double lng : thePointsLng) {
       if (isFirst) {
         url += "=";
         isFirst = false;
@@ -95,7 +112,7 @@ public class ElevationExport {
     RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, URL.encode(url));
 
     try {
-      Request request = builder.sendRequest(null, new RequestCallback() {
+      builder.sendRequest(null, new RequestCallback() {
         public void onError(Request request, Throwable exception) {
           // Couldn't connect to server (could be timeout, SOP violation, etc.)
           com.google.gwt.user.client.Window.alert("Couldn't connect to WebService: " + exception.getMessage());
@@ -105,13 +122,12 @@ public class ElevationExport {
           if (200 == response.getStatusCode()) {
             // Process the response in response.getText()
             String result = response.getText();
-            // com.google.gwt.user.client.Window.alert(result);
             String[] resMeters = result.split("\r\n");
             String old = theData.getRawValue();
             String nvalue = "";
             int i = 0;
             for (String pointMeters : resMeters) {
-              nvalue += _pointsLat.get(i) + ";" + _pointsLng.get(i) + ";" + pointMeters + "\r\n";
+              nvalue += thePointsLat.get(i) + ";" + thePointsLng.get(i) + ";" + pointMeters + "\r\n";
               i++;
             }
             theData.setRawValue(old + nvalue);
